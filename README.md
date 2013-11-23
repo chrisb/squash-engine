@@ -1,5 +1,12 @@
 # squash-engine
 
-This is a fork of the [Squash front-end web application (and reporting API)](https://github.com/SquareSquash/web) the goal of this fork is to make the models and controllers embeddable in other applications by creating a Rails engine.
+This is a fork of the [Squash front-end web application (and API)](https://github.com/SquareSquash/web) with the goal of making Squash's models and controllers embeddable in other applications via `Rails::Engine`.
 
-It's obviously not ready yet.
+## Objectives
+
+* Namespace appropriate code (for eventual use with `isolate_namespace`)
+* Reduce the number of dependencies overall
+* Favor officially- or commmunity-supported solutions over custom Gems (sorry RISCfuture!)
+* Make Erector optional (sorry RISCfuture!)
+* Abstract away authentication and registration (i.e. Devise, etc.)
+* MySQL support (eventually)
