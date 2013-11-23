@@ -45,66 +45,68 @@
 # |:-------|:-----------------------------------------------|
 # | `body` | The Markdown-formatted content of the comment. |
 
-class Comment < ActiveRecord::Base
-  belongs_to :user, inverse_of: :comments
-  belongs_to :bug, inverse_of: :comments
+module Squash
+  class Comment < Squash::Record
+    belongs_to :user, inverse_of: :comments
+    belongs_to :bug, inverse_of: :comments
 
-  attr_readonly :user, :bug, :number
+    attr_readonly :user, :bug, :number
 
-  include HasMetadataColumn
-  has_metadata_column(
-    body: {presence: true, length: {maximum: 2000}}
-  )
+    include HasMetadataColumn
+    has_metadata_column(
+      body: {presence: true, length: {maximum: 2000}}
+    )
 
-  validates :bug,
-            presence: true
-  #validates :number,
-  #          presence:     true,
-  #          numericality: {only_integer: true, greater_than: 0},
-                       #          uniqueness: {scope: :bug_id}
-  validate :user_must_have_permission_to_comment
+    validates :bug,
+              presence: true
+    #validates :number,
+    #          presence:     true,
+    #          numericality: {only_integer: true, greater_than: 0},
+                         #          uniqueness: {scope: :bug_id}
+    validate :user_must_have_permission_to_comment
 
-  after_create :reload # grab the number value after the rule has been run
-  after_destroy :remove_events
-  after_save { |comment| comment.bug.index_for_search! }
+    after_create :reload # grab the number value after the rule has been run
+    after_destroy :remove_events
+    after_save { |comment| comment.bug.index_for_search! }
 
-  # @private
-  def to_param() number end
+    # @private
+    def to_param() number end
 
-  # @private
-  def as_json(options=nil)
-    options ||= {}
-    options[:except] = Array.wrap(options[:except])
-    options[:except] << :id
-    options[:except] << :user_id
-    options[:except] << :bug_id
+    # @private
+    def as_json(options=nil)
+      options ||= {}
+      options[:except] = Array.wrap(options[:except])
+      options[:except] << :id
+      options[:except] << :user_id
+      options[:except] << :bug_id
 
-    options[:include] = Array.wrap(options[:include])
-    options[:include] << :user
+      options[:include] = Array.wrap(options[:include])
+      options[:include] << :user
 
-    super options
-  end
+      super options
+    end
 
-  # @private
-  def to_json(options={})
-    options[:except] = Array.wrap(options[:except])
-    options[:except] << :id
-    options[:except] << :user_id
-    options[:except] << :bug_id
+    # @private
+    def to_json(options={})
+      options[:except] = Array.wrap(options[:except])
+      options[:except] << :id
+      options[:except] << :user_id
+      options[:except] << :bug_id
 
-    options[:include] = Array.wrap(options[:include])
-    options[:include] << :user
+      options[:include] = Array.wrap(options[:include])
+      options[:include] << :user
 
-    super options
-  end
+      super options
+    end
 
-  private
+    private
 
-  def user_must_have_permission_to_comment
-    errors.add(:bug_id, :not_allowed) unless [:member, :admin, :owner].include? user.role(bug)
-  end
+    def user_must_have_permission_to_comment
+      errors.add(:bug_id, :not_allowed) unless [:member, :admin, :owner].include? user.role(bug)
+    end
 
-  def remove_events
-    bug.events.find_each { |event| event.destroy if event.kind == 'comment' && event.data['comment_id'] == id }
+    def remove_events
+      bug.events.find_each { |event| event.destroy if event.kind == 'comment' && event.data['comment_id'] == id }
+    end
   end
 end

@@ -26,17 +26,19 @@
 # | `line`            | The line in the file on which the blame was run.                                      |
 # | `blamed_revision` | The revision that most recently modified that file and line, on or before `revision`. |
 
-class Blame < ActiveRecord::Base
-  validates :repository_hash, :revision, :blamed_revision,
-            presence: true,
-            length:   {is: 40},
-            format:   {with: /\A[0-9a-f]+\z/}
-  validates :file,
-            presence: true,
-            length:   {maximum: 255}
-  validates :line,
-            presence:     true,
-            numericality: {only_integer: true, greater_than: 0}
+module Squash
+  class Blame < Squash::Record
+    validates :repository_hash, :revision, :blamed_revision,
+              presence: true,
+              length:   {is: 40},
+              format:   {with: /\A[0-9a-f]+\z/}
+    validates :file,
+              presence: true,
+              length:   {maximum: 255}
+    validates :line,
+              presence:     true,
+              numericality: {only_integer: true, greater_than: 0}
 
-  scope :for_project, ->(project) { where(repository_hash: project.repository_hash) }
+    scope :for_project, ->(project) { where(repository_hash: project.repository_hash) }
+  end
 end

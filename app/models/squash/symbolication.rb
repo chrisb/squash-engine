@@ -54,91 +54,93 @@ require 'base64'
 # | `symbols` | A serialized `Symbolication::Symbols` object with debug_info data.      |
 # | `lines`   | A serialized `Symbolication::Lines` object with debug_lines data.       |
 
-class Symbolication < ActiveRecord::Base
-  # internal use only
-  has_many :occurrences, inverse_of: :symbolication, primary_key: 'uuid', dependent: :restrict_with_exception
+module Squash
+  class Symbolication < Squash::Record
+    # internal use only
+    has_many :occurrences, inverse_of: :symbolication, primary_key: 'uuid', dependent: :restrict_with_exception
 
-  self.primary_key = 'uuid'
+    self.primary_key = 'uuid'
 
-  validates :uuid,
-            presence:   true,
-            uniqueness: true,
-            format:     {with: /\A[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}\z/i}
+    validates :uuid,
+              presence:   true,
+              uniqueness: true,
+              format:     {with: /\A[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}\z/i}
 
-  after_commit(on: :create) do |sym|
-    BackgroundRunner.run SymbolicationWorker, sym.id
-  end
+    after_commit(on: :create) do |sym|
+      BackgroundRunner.run SymbolicationWorker, sym.id
+    end
 
-  attr_readonly :uuid
+    attr_readonly :uuid
 
-  # @private
-  def symbols
-    @symbols ||= begin
-      syms = YAML.load(Zlib::Inflate.inflate(Base64.decode64(read_attribute(:symbols))))
+    # @private
+    def symbols
+      @symbols ||= begin
+        syms = YAML.load(Zlib::Inflate.inflate(Base64.decode64(read_attribute(:symbols))))
+        raise TypeError, "expected Squash::Symbolicator::Symbols, got #{syms.class}" unless syms.kind_of?(Squash::Symbolicator::Symbols)
+        syms
+      end
+    end
+
+    # @private
+    def symbols=(syms)
       raise TypeError, "expected Squash::Symbolicator::Symbols, got #{syms.class}" unless syms.kind_of?(Squash::Symbolicator::Symbols)
-      syms
+      write_attribute :symbols, Base64.encode64(Zlib::Deflate.deflate(syms.to_yaml))
+      @symbols = syms
     end
-  end
 
-  # @private
-  def symbols=(syms)
-    raise TypeError, "expected Squash::Symbolicator::Symbols, got #{syms.class}" unless syms.kind_of?(Squash::Symbolicator::Symbols)
-    write_attribute :symbols, Base64.encode64(Zlib::Deflate.deflate(syms.to_yaml))
-    @symbols = syms
-  end
+    # @private
+    def lines
+      @lines ||= begin
+        lns = YAML.load(Zlib::Inflate.inflate(Base64.decode64(read_attribute(:lines))))
+        raise TypeError, "expected Squash::Symbolicator::Lines, got #{lns.class}" unless lns.kind_of?(Squash::Symbolicator::Lines)
+        lns
+      end
+    end
 
-  # @private
-  def lines
-    @lines ||= begin
-      lns = YAML.load(Zlib::Inflate.inflate(Base64.decode64(read_attribute(:lines))))
+    # @private
+    def lines=(lns)
       raise TypeError, "expected Squash::Symbolicator::Lines, got #{lns.class}" unless lns.kind_of?(Squash::Symbolicator::Lines)
-      lns
+      write_attribute :lines, Base64.encode64(Zlib::Deflate.deflate(lns.to_yaml))
+      @lines = lns
     end
-  end
-
-  # @private
-  def lines=(lns)
-    raise TypeError, "expected Squash::Symbolicator::Lines, got #{lns.class}" unless lns.kind_of?(Squash::Symbolicator::Lines)
-    write_attribute :lines, Base64.encode64(Zlib::Deflate.deflate(lns.to_yaml))
-    @lines = lns
-  end
 
 
-  # Returns the file path, line number, and method name corresponding to a
-  # program counter address. The result is formatted for use as part of an
-  # {Occurrence}'s backtrace element.
-  #
-  # If `lines` is provided, the line number will be the specific corresponding
-  # line number within the method. Otherwise it will be the line number of the
-  # method declaration.
-  #
-  # @param [Fixnum] address A stack return address (decimal number).
-  # @return [Hash, nil] The file path, line number, and method name containing
-  #   that address, or `nil` if that address could not be symbolicated.
+    # Returns the file path, line number, and method name corresponding to a
+    # program counter address. The result is formatted for use as part of an
+    # {Occurrence}'s backtrace element.
+    #
+    # If `lines` is provided, the line number will be the specific corresponding
+    # line number within the method. Otherwise it will be the line number of the
+    # method declaration.
+    #
+    # @param [Fixnum] address A stack return address (decimal number).
+    # @return [Hash, nil] The file path, line number, and method name containing
+    #   that address, or `nil` if that address could not be symbolicated.
 
-  def symbolicate(address)
-    line   = lines.for(address) if lines
-    symbol = symbols.for(address)
+    def symbolicate(address)
+      line   = lines.for(address) if lines
+      symbol = symbols.for(address)
 
-    if line && symbol
-      {
-          'file'   => line.file,
-          'line'   => line.line,
-          'symbol' => symbol.ios_method
-      }
-    elsif line
-      {
-          'file' => line.file,
-          'line' => line.line
-      }
-    elsif symbol
-      {
-          'file'   => symbol.file,
-          'line'   => symbol.line,
-          'symbol' => symbol.ios_method
-      }
-    else
-      nil
+      if line && symbol
+        {
+            'file'   => line.file,
+            'line'   => line.line,
+            'symbol' => symbol.ios_method
+        }
+      elsif line
+        {
+            'file' => line.file,
+            'line' => line.line
+        }
+      elsif symbol
+        {
+            'file'   => symbol.file,
+            'line'   => symbol.line,
+            'symbol' => symbol.ios_method
+        }
+      else
+        nil
+      end
     end
   end
 end

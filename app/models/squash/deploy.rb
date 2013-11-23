@@ -57,59 +57,61 @@
 # | `build`   | The internal version identifier of the release. |
 # | `version` | The human readable version number.              |
 
-class Deploy < ActiveRecord::Base
-  belongs_to :environment, inverse_of: :deploys
-  has_one :project, through: :environment
-  # internal only
-  has_many :bugs, inverse_of: :deploy, dependent: :nullify
-  has_one :obfuscation_map, inverse_of: :deploy, dependent: :destroy
+module Squash
+  class Deploy < Squash::Record
+    belongs_to :environment, inverse_of: :deploys
+    has_one :project, through: :environment
+    # internal only
+    has_many :bugs, inverse_of: :deploy, dependent: :nullify
+    has_one :obfuscation_map, inverse_of: :deploy, dependent: :destroy
 
-  attr_readonly :environment, :revision, :build, :hostname, :deployed_at,
-                :version
+    attr_readonly :environment, :revision, :build, :hostname, :deployed_at,
+                  :version
 
-  validates :environment,
-            presence: true
-  validates :revision,
-            presence:       true,
-            known_revision: {repo: ->(map) { RepoProxy.new(map, :environment, :project) }}
-  validates :deployed_at,
-            presence:   true,
-            timeliness: {type: :time}
-  validates :hostname,
-            length:    {maximum: 126},
-            allow_nil: true
-  validates :build,
-            length:     {maximum: 40},
-            uniqueness: {scope: :environment_id},
-            allow_nil:  true
-  validates :version,
-            length:    {maximum: 126},
-            allow_nil: true
+    validates :environment,
+              presence: true
+    validates :revision,
+              presence:       true,
+              known_revision: {repo: ->(map) { RepoProxy.new(map, :environment, :project) }}
+    validates :deployed_at,
+              presence:   true,
+              timeliness: {type: :time}
+    validates :hostname,
+              length:    {maximum: 126},
+              allow_nil: true
+    validates :build,
+              length:     {maximum: 40},
+              uniqueness: {scope: :environment_id},
+              allow_nil:  true
+    validates :version,
+              length:    {maximum: 126},
+              allow_nil: true
 
-  after_commit(on: :create) do |deploy|
-    BackgroundRunner.run DeployFixMarker, deploy.id
-  end
-  set_nil_if_blank :hostname, :build
+    after_commit(on: :create) do |deploy|
+      BackgroundRunner.run DeployFixMarker, deploy.id
+    end
+    set_nil_if_blank :hostname, :build
 
-  scope :builds, -> { where('build IS NOT NULL') }
-  scope :by_time, -> { order('deployed_at DESC') }
+    scope :builds, -> { where('build IS NOT NULL') }
+    scope :by_time, -> { order('deployed_at DESC') }
 
-  # @return [Git::Object::Commit] The Commit for this Deploy's `revision`.
-  def commit() environment.project.repo.object revision end
+    # @return [Git::Object::Commit] The Commit for this Deploy's `revision`.
+    def commit() environment.project.repo.object revision end
 
-  # @return [true, false] `true` if this Deploy is a release of a distributed
-  #   Project; `false` if it is a deploy of a hosted Project.
-  def release?() build.present? end
+    # @return [true, false] `true` if this Deploy is a release of a distributed
+    #   Project; `false` if it is a deploy of a hosted Project.
+    def release?() build.present? end
 
-  # @private
-  def to_json(options={})
-    options[:except] = Array.wrap(options[:except])
-    options[:except] << :id
-    options[:except] << :environment_id
-    super options
-  end
+    # @private
+    def to_json(options={})
+      options[:except] = Array.wrap(options[:except])
+      options[:except] << :id
+      options[:except] << :environment_id
+      super options
+    end
 
-  def devices_affected
-    DeviceBug.joins(:bug).where(bugs: {deploy_id: id}).distinct.count(:device_id)
+    def devices_affected
+      DeviceBug.joins(:bug).where(bugs: {deploy_id: id}).distinct.count(:device_id)
+    end
   end
 end

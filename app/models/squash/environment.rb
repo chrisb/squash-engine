@@ -42,42 +42,44 @@
 # | `sends_emails`       | Whether or not exceptions in this environment generate email notifications.      |
 # | `notifies_pagerduty` | If `true`, PagerDuty incidents are created and managed for Bugs and Occurrences. |
 
-class Environment < ActiveRecord::Base
-  belongs_to :project, inverse_of: :environments
+module Squash
+  class Environment < Squash::Record
+    belongs_to :project, inverse_of: :environments
 
-  has_one :default_project, class_name: 'Project', foreign_key: 'default_environment_id', inverse_of: :default_environment
-  has_many :deploys, dependent: :delete_all, inverse_of: :environment
-  has_many :bugs, dependent: :delete_all, inverse_of: :environment
-  has_many :source_maps, inverse_of: :environment, dependent: :delete_all
+    has_one :default_project, class_name: 'Project', foreign_key: 'default_environment_id', inverse_of: :default_environment
+    has_many :deploys, dependent: :delete_all, inverse_of: :environment
+    has_many :bugs, dependent: :delete_all, inverse_of: :environment
+    has_many :source_maps, inverse_of: :environment, dependent: :delete_all
 
-  include HasMetadataColumn
-  has_metadata_column(
-      sends_emails:       {type: Boolean, default: true},
-      notifies_pagerduty: {type: Boolean, default: true}
-  )
+    include HasMetadataColumn
+    has_metadata_column(
+        sends_emails:       {type: Boolean, default: true},
+        notifies_pagerduty: {type: Boolean, default: true}
+    )
 
-  attr_readonly :project, :name
+    attr_readonly :project, :name
 
-  validates :project,
-            presence: true
-  validates :name,
-            presence:   true,
-            length:     {maximum: 100},
-            uniqueness: {case_sensitive: false, scope: :project_id},
-            format:     {with: /\A[a-zA-Z0-9\-_]+\z/}
+    validates :project,
+              presence: true
+    validates :name,
+              presence:   true,
+              length:     {maximum: 100},
+              uniqueness: {case_sensitive: false, scope: :project_id},
+              format:     {with: /\A[a-zA-Z0-9\-_]+\z/}
 
-  scope :with_name, ->(name) { where("LOWER(name) = ?", name.downcase) }
+    scope :with_name, ->(name) { where("LOWER(name) = ?", name.downcase) }
 
-  # @private
-  def to_param() name end
+    # @private
+    def to_param() name end
 
-  def as_json(options=nil)
-    options ||= {}
+    def as_json(options=nil)
+      options ||= {}
 
-    options[:except] = Array.wrap(options[:except])
-    options[:except] << :id
-    options[:except] << :project_id
+      options[:except] = Array.wrap(options[:except])
+      options[:except] << :id
+      options[:except] << :project_id
 
-    super options
+      super options
+    end
   end
 end

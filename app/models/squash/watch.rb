@@ -23,29 +23,31 @@
 # | `user` | The {User} watching the Bug. |
 # | `bug`  | The {Bug} being watched.     |
 
-class Watch < ActiveRecord::Base
-  self.primary_keys = :user_id, :bug_id
+module Squash
+  class Watch < Squash::Record
+    self.primary_keys = :user_id, :bug_id
 
-  belongs_to :user, inverse_of: :watches
-  belongs_to :bug, inverse_of: :watches
+    belongs_to :user, inverse_of: :watches
+    belongs_to :bug, inverse_of: :watches
 
-  validates :user,
-      presence: true
-  validates :bug,
-      presence: true
-  validate :user_cannot_watch_foreign_bug
+    validates :user,
+        presence: true
+    validates :bug,
+        presence: true
+    validate :user_cannot_watch_foreign_bug
 
-  # @private
-  def as_json(options=nil)
-    options ||= {}
-    options[:except] = Array.wrap(options[:except]) + [:user_id, :bug_id]
-    options[:include] = Array.wrap(options[:include]) + [:user, :bug]
-    super options
-  end
+    # @private
+    def as_json(options=nil)
+      options ||= {}
+      options[:except] = Array.wrap(options[:except]) + [:user_id, :bug_id]
+      options[:include] = Array.wrap(options[:include]) + [:user, :bug]
+      super options
+    end
 
-  private
+    private
 
-  def user_cannot_watch_foreign_bug
-    errors.add(:bug_id, :no_permission) unless user.role(bug.environment.project)
+    def user_cannot_watch_foreign_bug
+      errors.add(:bug_id, :no_permission) unless user.role(bug.environment.project)
+    end
   end
 end

@@ -49,54 +49,56 @@
 # |:------|:--------------------------------------------------------------------------|
 # | `map` | A serialized `Squash::Javascript::SourceMap` object with source map data. |
 
-class SourceMap < ActiveRecord::Base
-  belongs_to :environment, inverse_of: :source_maps
+module Squash
+  class SourceMap < Squash::Record
+    belongs_to :environment, inverse_of: :source_maps
 
-  validates :environment,
-            presence: true
-  validates :revision,
-            presence:       true,
-            known_revision: {repo: ->(map) { RepoProxy.new(map, :environment, :project) }}
+    validates :environment,
+              presence: true
+    validates :revision,
+              presence:       true,
+              known_revision: {repo: ->(map) { RepoProxy.new(map, :environment, :project) }}
 
-  after_commit(on: :create) do |map|
-    BackgroundRunner.run SourceMapWorker, map.id
-  end
-
-  attr_readonly :revision
-
-  # @private
-  def map
-    @map ||= begin
-      m = YAML.load(Zlib::Inflate.inflate(Base64.decode64(read_attribute(:map))))
-      raise TypeError, "expected Squash::Javascript::SourceMap, got #{m.class}" unless m.kind_of?(Squash::Javascript::SourceMap)
-      m
+    after_commit(on: :create) do |map|
+      BackgroundRunner.run SourceMapWorker, map.id
     end
-  end
 
-  # @private
-  def map=(m)
-    raise TypeError, "expected Squash::Javascript::SourceMap, got #{m.class}" unless m.kind_of?(Squash::Javascript::SourceMap)
-    write_attribute :map, Base64.encode64(Zlib::Deflate.deflate(m.to_yaml))
-  end
+    attr_readonly :revision
 
-  # Given a line of code within a minified file, attempts to resolve it to a
-  # line of code within the original source.
-  #
-  # @param [String] route The URL of the minified JavaScript file.
-  # @param [Fixnum] line The line of code.
-  # @param [Fixnum] column The character number within the line.
-  # @return [Hash, nil] If found, a hash consisting of the source file path,
-  #   line number, and method name.
+    # @private
+    def map
+      @map ||= begin
+        m = YAML.load(Zlib::Inflate.inflate(Base64.decode64(read_attribute(:map))))
+        raise TypeError, "expected Squash::Javascript::SourceMap, got #{m.class}" unless m.kind_of?(Squash::Javascript::SourceMap)
+        m
+      end
+    end
 
-  def resolve(route, line, column)
-    if (mapping = map.resolve(route, line, column))
-      {
-          'file'   => mapping.source_file,
-          'line'   => mapping.source_line,
-          'symbol' => mapping.symbol
-      }
-    else
-      nil
+    # @private
+    def map=(m)
+      raise TypeError, "expected Squash::Javascript::SourceMap, got #{m.class}" unless m.kind_of?(Squash::Javascript::SourceMap)
+      write_attribute :map, Base64.encode64(Zlib::Deflate.deflate(m.to_yaml))
+    end
+
+    # Given a line of code within a minified file, attempts to resolve it to a
+    # line of code within the original source.
+    #
+    # @param [String] route The URL of the minified JavaScript file.
+    # @param [Fixnum] line The line of code.
+    # @param [Fixnum] column The character number within the line.
+    # @return [Hash, nil] If found, a hash consisting of the source file path,
+    #   line number, and method name.
+
+    def resolve(route, line, column)
+      if (mapping = map.resolve(route, line, column))
+        {
+            'file'   => mapping.source_file,
+            'line'   => mapping.source_line,
+            'symbol' => mapping.symbol
+        }
+      else
+        nil
+      end
     end
   end
 end

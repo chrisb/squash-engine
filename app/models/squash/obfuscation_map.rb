@@ -47,30 +47,32 @@ require 'base64'
 # |:------------|:---------------------------------------------------------------------|
 # | `namespace` | A serialized `Squash::Java::Namespace` object with obfuscation data. |
 
-class ObfuscationMap < ActiveRecord::Base
-  belongs_to :deploy, inverse_of: :obfuscation_map
+module Squash
+  class ObfuscationMap < Squash::Record
+    belongs_to :deploy, inverse_of: :obfuscation_map
 
-  validates :deploy,
-            presence: true
+    validates :deploy,
+              presence: true
 
-  after_commit(on: :create) do |map|
-    BackgroundRunner.run ObfuscationMapWorker, map.id
-  end
-
-  attr_readonly :namespace
-
-  # @private
-  def namespace
-    @namespace ||= begin
-      ns = YAML.load(Zlib::Inflate.inflate(Base64.decode64(read_attribute(:namespace))))
-      raise TypeError, "expected Squash::Java::Namespace, got #{ns.class}" unless ns.kind_of?(Squash::Java::Namespace)
-      ns
+    after_commit(on: :create) do |map|
+      BackgroundRunner.run ObfuscationMapWorker, map.id
     end
-  end
 
-  # @private
-  def namespace=(ns)
-    raise TypeError, "expected Squash::Java::Namespace, got #{ns.class}" unless ns.kind_of?(Squash::Java::Namespace)
-    write_attribute :namespace, Base64.encode64(Zlib::Deflate.deflate(ns.to_yaml))
+    attr_readonly :namespace
+
+    # @private
+    def namespace
+      @namespace ||= begin
+        ns = YAML.load(Zlib::Inflate.inflate(Base64.decode64(read_attribute(:namespace))))
+        raise TypeError, "expected Squash::Java::Namespace, got #{ns.class}" unless ns.kind_of?(Squash::Java::Namespace)
+        ns
+      end
+    end
+
+    # @private
+    def namespace=(ns)
+      raise TypeError, "expected Squash::Java::Namespace, got #{ns.class}" unless ns.kind_of?(Squash::Java::Namespace)
+      write_attribute :namespace, Base64.encode64(Zlib::Deflate.deflate(ns.to_yaml))
+    end
   end
 end

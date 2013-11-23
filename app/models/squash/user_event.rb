@@ -23,14 +23,16 @@
 # | `user`  | The {User} watching the Bug.                  |
 # | `event` | The {Event} for the Bug the User is watching. |
 
-class UserEvent < ActiveRecord::Base
-  self.primary_keys = [:user_id, :event_id]
+module Squash
+  class UserEvent < Squash::Record
+    self.primary_keys = [:user_id, :event_id]
 
-  belongs_to :user, inverse_of: :user_events
-  belongs_to :event, inverse_of: :user_events
+    belongs_to :user, inverse_of: :user_events
+    belongs_to :event, inverse_of: :user_events
 
-  validates :user,
-            presence: true
-  validates :event,
-            presence: true
+    validates :user,
+              presence: true
+    validates :event,
+              presence: true
+  end
 end

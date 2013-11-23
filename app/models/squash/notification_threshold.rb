@@ -37,28 +37,30 @@
 # | `period`          | The amount of time, in seconds, the threshold is calculated over. |
 # | `last_tripped_at` | The last time this threshold was exceeded.                        |
 
-class NotificationThreshold < ActiveRecord::Base
-  belongs_to :user, inverse_of: :notification_thresholds
-  belongs_to :bug, inverse_of: :notification_thresholds
+module Squash
+  class NotificationThreshold < Squash::Record
+    belongs_to :user, inverse_of: :notification_thresholds
+    belongs_to :bug, inverse_of: :notification_thresholds
 
-  self.primary_keys = [:user_id, :bug_id]
+    self.primary_keys = [:user_id, :bug_id]
 
-  validates :user,
-            presence: true
-  validates :bug,
-            presence: true
-  validates :period,
-            presence:     true,
-            numericality: {greater_than: 0, only_integer: true}
-  validates :threshold,
-            presence:     true,
-            numericality: {greater_than: 0, only_integer: true}
+    validates :user,
+              presence: true
+    validates :bug,
+              presence: true
+    validates :period,
+              presence:     true,
+              numericality: {greater_than: 0, only_integer: true}
+    validates :threshold,
+              presence:     true,
+              numericality: {greater_than: 0, only_integer: true}
 
-  # @return [true, false] Whether or not this Bug has occurred `threshold` times
-  #   in the past `period` seconds.
+    # @return [true, false] Whether or not this Bug has occurred `threshold` times
+    #   in the past `period` seconds.
 
-  def tripped?
-    (last_tripped_at.nil? || last_tripped_at < period.seconds.ago) &&
-        bug.occurrences.where("occurred_at >= ?", threshold.seconds.ago).count >= threshold
+    def tripped?
+      (last_tripped_at.nil? || last_tripped_at < period.seconds.ago) &&
+          bug.occurrences.where("occurred_at >= ?", threshold.seconds.ago).count >= threshold
+    end
   end
 end

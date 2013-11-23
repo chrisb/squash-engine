@@ -12,14 +12,16 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-class DeviceBug < ActiveRecord::Base
-  self.primary_keys = [:bug_id, :device_id]
+module Squash
+  class DeviceBug < Squash::Record
+    self.primary_keys = [:bug_id, :device_id]
 
-  belongs_to :bug, inverse_of: :device_bugs
+    belongs_to :bug, inverse_of: :device_bugs
 
-  validates :bug,
-            presence: true
-  validates :device_id,
-            presence: true,
-            length:   {maximum: 126}
+    validates :bug,
+              presence: true
+    validates :device_id,
+              presence: true,
+              length:   {maximum: 126}
+  end
 end
