@@ -20,7 +20,7 @@ require 'spec_helper'
 describe CommitsController do
   describe '#index' do
     before :all do
-      Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
+      Squash::Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
       @project = FactoryGirl.create(:project, repository_url: "git@github.com:RISCfuture/better_caller.git")
     end
 
@@ -155,7 +155,7 @@ end
       end
 
       it "should update the repo given an unknown revision" do
-        Project.stub(:find_from_slug!).and_return(@project)
+        Squash::Project.stub(:find_from_slug!).and_return(@project)
         @project.repo.should_receive(:fetch).once
 
         get :context, @valid_params.merge(id: '39aacf78b603ade2034e93b9b12420b350dfa151') # unknown revision

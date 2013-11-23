@@ -16,7 +16,7 @@ require 'spec_helper'
 
 describe Blamer::Recency do
   before :each do
-    Project.delete_all
+    Squash::Project.delete_all
     @project   = FactoryGirl.create(:project)
     @env       = FactoryGirl.create(:environment, project: @project)
     @bug       = FactoryGirl.create(:bug,

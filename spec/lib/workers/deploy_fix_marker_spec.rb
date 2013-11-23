@@ -20,7 +20,7 @@ describe DeployFixMarker do
   end
 
   it "should mark the appropriate bugs as fix_deployed" do
-    Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
+    Squash::Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
     project = FactoryGirl.create(:project, repository_url: "git@github.com:RISCfuture/better_caller.git")
     env     = FactoryGirl.create(:environment, project: project)
     deploy  = FactoryGirl.build(:deploy, environment: env, revision: env.project.repo.object('HEAD^').sha)
@@ -39,7 +39,7 @@ describe DeployFixMarker do
   end
 
   it "should create events for the fixed bugs" do
-    Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
+    Squash::Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
     project = FactoryGirl.create(:project, repository_url: "git@github.com:RISCfuture/better_caller.git")
     env    = FactoryGirl.create(:environment, project: project)
     deploy = FactoryGirl.build(:deploy, environment: env, revision: project.repo.object('HEAD^').sha)

@@ -138,11 +138,11 @@ class Project::MembershipsController < ApplicationController
   private
 
   def find_project
-    @project = Project.find_from_slug!(params[:project_id])
+    @project = Squash::Project.find_from_slug!(params[:project_id])
   end
 
   def find_membership
-    @membership = @project.memberships.find_by_user_id!(User.find_by_username!(params[:id]))
+    @membership = @project.memberships.find_by_user_id!(Squash::User.find_by_username!(params[:id]))
   end
 
   def decorate(memberships)

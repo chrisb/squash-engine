@@ -168,7 +168,7 @@ describe BugsController do
 
   describe "#show" do
     before(:each) do
-      Project.where(repository_url: 'git@github.com:RISCfuture/better_caller.git').delete_all
+      Squash::Project.where(repository_url: 'git@github.com:RISCfuture/better_caller.git').delete_all
       @project = FactoryGirl.create(:project, repository_url: 'git@github.com:RISCfuture/better_caller.git')
       @bug     = FactoryGirl.create(:bug, environment: FactoryGirl.create(:environment, project: @project))
       FactoryGirl.create :rails_occurrence, bug: @bug

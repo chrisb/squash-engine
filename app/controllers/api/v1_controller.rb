@@ -74,7 +74,7 @@ class Api::V1Controller < ActionController::Base
   def deploy
     require_params :project, :environment, :deploy
 
-    project = Project.find_by_api_key(params['project']['api_key']) or raise(API::UnknownAPIKeyError)
+    project = Squash::Project.find_by_api_key(params['project']['api_key']) or raise(API::UnknownAPIKeyError)
     environment = project.environments.with_name(params['environment']['name']).find_or_create!(name: params['environment']['name'])
 
     environment.deploys.create!(deploy_params)
@@ -117,7 +117,7 @@ class Api::V1Controller < ActionController::Base
     map = YAML.load(Zlib::Inflate.inflate(Base64.decode64(params['namespace'])), safe: true, deserialize_symbols: false)
     return head(:unprocessable_entity) unless map.kind_of?(Squash::Java::Namespace)
 
-    project = Project.find_by_api_key(params['api_key']) or raise(API::UnknownAPIKeyError)
+    project = Squash::Project.find_by_api_key(params['api_key']) or raise(API::UnknownAPIKeyError)
     deploy = project.
         environments.with_name(params['environment']).first!.
         deploys.find_by_build!(params['build'])
@@ -142,7 +142,7 @@ class Api::V1Controller < ActionController::Base
     sourcemap = YAML.load(Zlib::Inflate.inflate(Base64.decode64(params['sourcemap'])), safe: true, deserialize_symbols: false)
     return head(:unprocessable_entity) unless sourcemap.kind_of?(Squash::Javascript::SourceMap)
 
-    project = Project.find_by_api_key(params['api_key']) or raise(API::UnknownAPIKeyError)
+    project = Squash::Project.find_by_api_key(params['api_key']) or raise(API::UnknownAPIKeyError)
     project.
         environments.with_name(params['environment']).find_or_create!(name: params['environment']).
         source_maps.create(map: sourcemap, revision: params['revision'])

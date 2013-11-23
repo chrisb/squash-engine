@@ -21,7 +21,7 @@ describe ObfuscationMap do
         pending "This is done in an after_commit hook, and it can't be tested with transactional fixtures (which are always rolled back)"
       end
 
-      Project.delete_all
+      Squash::Project.delete_all
       project = FactoryGirl.create(:project, repository_url: 'git@github.com:RISCfuture/better_caller.git')
       env     = FactoryGirl.create(:environment, project: project)
 
@@ -60,7 +60,7 @@ describe ObfuscationMap do
         pending "This is done in an after_commit hook, and it can't be tested with transactional fixtures (which are always rolled back)"
       end
 
-      Project.delete_all
+      Squash::Project.delete_all
       project = FactoryGirl.create(:project, repository_url: 'git@github.com:RISCfuture/better_caller.git')
       env     = FactoryGirl.create(:environment, project: project)
 

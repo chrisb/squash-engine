@@ -58,7 +58,7 @@ class OccurrencesWorker
     raise API::InvalidAttributesError, "revision or build must be specified" unless @attrs.include?('revision') || @attrs.include?('build')
 
     begin
-      @project = Project.find_by_api_key!(@attrs.delete('api_key'))
+      @project = Squash::Project.find_by_api_key!(@attrs.delete('api_key'))
     rescue ActiveRecord::RecordNotFound
       raise API::UnknownAPIKeyError, "Unknown API key"
     end

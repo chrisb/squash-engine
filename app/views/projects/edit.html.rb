@@ -257,7 +257,7 @@ end
           SH
         end
       end
-      
+
       def java
         p do
           text "Download the "
@@ -299,7 +299,7 @@ end
 
             f.label(:disable_message_filtering, class: 'checkbox-label') do
               f.check_box :disable_message_filtering
-              text ::Project.human_attribute_name(:disable_message_filtering)
+              text ::Squash::Project.human_attribute_name(:disable_message_filtering)
             end
             p(class: 'help-block') do
               text "If unchecked, exception messages will be scanned for "
@@ -364,7 +364,7 @@ end
 
             f.label(:sends_emails_outside_team, class: 'checkbox-label') do
               f.check_box :sends_emails_outside_team
-              text ::Project.human_attribute_name(:sends_emails_outside_team)
+              text ::Squash::Project.human_attribute_name(:sends_emails_outside_team)
             end
             p "If unchecked, people must be added as members of this project before they will receive exception alerts.", class: 'help-block'
 
@@ -408,7 +408,7 @@ end
 
             f.label(:pagerduty_enabled, class: 'checkbox-label') do
               f.check_box :pagerduty_enabled
-              text ::Project.human_attribute_name(:pagerduty_enabled)
+              text ::Squash::Project.human_attribute_name(:pagerduty_enabled)
             end
             p "If you uncheck this, PagerDuty will not be notified of any new occurrences. Acknowledgements and resolutions of existing incidents will still be sent.", class: 'help-block'
           end unless Squash::Configuration.pagerduty.disabled

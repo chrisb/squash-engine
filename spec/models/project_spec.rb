@@ -17,7 +17,7 @@ require 'spec_helper'
 describe Project do
   describe '#repo' do
     it "should check out the repository and return a Repository object" do
-      Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
+      Squash::Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
       repo = FactoryGirl.create(:project, repository_url: "git@github.com:RISCfuture/better_caller.git").repo
       repo.should be_kind_of(Git::Base)
       repo.index.should be_nil # should be bare
@@ -93,12 +93,12 @@ describe Project do
     it "should automatically set commit_url_format if able" do
       FactoryGirl.create(:project, repository_url: 'git@github.com:RISCfuture/better_caller.git').commit_url_format.should eql('https://github.com/RISCfuture/better_caller/commit/%{commit}')
       FactoryGirl.create(:project, repository_url: 'https://RISCfuture@github.com/RISCfuture/better_caller.git').commit_url_format.should eql('https://github.com/RISCfuture/better_caller/commit/%{commit}')
-      Project.where(repository_url: 'git@github.com:RISCfuture/better_caller.git').delete_all
+      Squash::Project.where(repository_url: 'git@github.com:RISCfuture/better_caller.git').delete_all
       FactoryGirl.create(:project, repository_url: 'git@github.com:RISCfuture/better_caller.git').commit_url_format.should eql('https://github.com/RISCfuture/better_caller/commit/%{commit}')
     end
 
     it "should not overwrite a custom commit_url_format" do
-      Project.where(repository_url: 'git@github.com:RISCfuture/better_caller.git').delete_all
+      Squash::Project.where(repository_url: 'git@github.com:RISCfuture/better_caller.git').delete_all
       FactoryGirl.create(:project, repository_url: 'git@github.com:RISCfuture/better_caller.git', commit_url_format: 'http://example.com/%{commit}').commit_url_format.should eql('http://example.com/%{commit}')
     end
   end

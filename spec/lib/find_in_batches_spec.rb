@@ -17,7 +17,7 @@ require 'spec_helper'
 describe "ActiveRecord::Base.find_in_batches" do
   context "[single surrogate key]" do
     before :all do
-      Project.delete_all; User.delete_all
+      Squash::Project.delete_all; User.delete_all
       @users = FactoryGirl.create_list(:user, 48).in_groups_of(10, false)
     end
 
