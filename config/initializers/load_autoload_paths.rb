@@ -14,8 +14,8 @@
 
 # Not sure why this isn't done automatically by Jetty/Jetpack, but oh well.
 
-if Squash::Application.config.cache_classes
-  Squash::Application.config.autoload_paths.each do |path|
+if Rails.application.config.cache_classes
+  Rails.application.config.autoload_paths.each do |path|
     Dir.glob(path.join('**', '*.rb')).each { |file| require file }
   end
 end

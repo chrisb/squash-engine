@@ -15,13 +15,13 @@
 # Configoro-Squash bridge. This file loads the Squash client configuration
 # stored in the dogfood.yml files and uses it to configure Squash.
 
-Squash::Ruby.configure Squash::Configuration.dogfood
+Squash::Ruby.configure(Squash::Configuration.dogfood.to_h)
 
 # Auto-configure development dogfood
 
 if defined?(Rails::Server)
   run_server = begin
-    Rails.env.development? && (project = Project.find_from_slug('squash'))
+    Rails.env.development? && (project = Squash::Project.find_from_slug('squash'))
   rescue ActiveRecord::StatementInvalid
     false
   end

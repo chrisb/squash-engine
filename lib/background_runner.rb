@@ -30,6 +30,8 @@ module BackgroundRunner
 
   def self.runner
     BackgroundRunner.const_get Squash::Configuration.concurrency.background_runner.to_sym, false
+  rescue NameError
+    BackgroundRunner::Multithread
   end
 
   # Shortcut for `BackgroundRunner.runner.run`.

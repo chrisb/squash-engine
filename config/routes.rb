@@ -12,7 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-Squash::Application.routes.draw do
+Rails.application.routes.draw do
   resources :projects, except: [:new] do
     member { patch :rekey }
     resources :commits do
@@ -73,7 +73,7 @@ Squash::Application.routes.draw do
   get 'search/suggestions' => 'search#suggestions'
   get 'search' => 'search#search'
 
-  root to: 'projects#index'
+  # root to: 'projects#index'
 
   if Squash::Configuration.concurrency.background_runner == 'Sidekiq'
     require 'sidekiq/web'
