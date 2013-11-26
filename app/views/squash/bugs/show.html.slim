@@ -1,0 +1,79 @@
+/ include Accordion
+/ needs :project, :environment, :bug, :aggregation_dimensions, :new_issue_url
+- @page_title = "Bug ##{number_with_delimiter @bug.number} (#{@project.name} #{@environment.name.capitalize})"
+- @breadcrumbs = [ @project, @environment, @bug ]
+
+= full_width_section do
+  / bug_title
+  h1
+    = @bug.class_name
+    = link_to '', '#', class: "icon-star#{'-empty' unless current_user.watches?(@bug)}", alt: 'Watch/unwatch this bug'
+
+  / notice_bars
+  - if @bug.fixed?
+    / fixed_bar
+    .alert.success
+      ' This bug has been marked as resolved.
+      - if @bug.resolution_revision
+        = "(#{commit_link(@project, @bug.resolution_revision)})"
+      = "The fix has been deployed." if @bug.fix_deployed?
+  - if @bug.duplicate?
+    / duplicate_bar
+    .alert.warning= "This bug is a duplicate of #{link_to '#'+number_with_delimiter(@bug.duplicate_of.number), project_environment_bug_url(@project, @environment, @bug.duplicate_of)}."
+  - unless current_user.role(@bug)
+    / uneditable_bar
+    p.alert.info= "You will need to #{link_to "join this project", join_project_my_membership_url(@project), :'data-sqmethod' => 'POST', id: 'join-link'} to edit this bug."
+
+  / bug_info
+  h5 Message
+  pre.scrollable= @bug.message_template
+
+  = render 'squash/bugs/location'
+
+  - if @bug.special_file?
+    - case @bug.file # TODO don't guess, record this information
+    - when /^0x/
+      p.alert.info This bug has not been symbolicated. If you would like meaningful backtraces, please upload a symbolication file using your language’s client library.
+    - when /^https?:\/\//
+      p.alert.info No JavaScript source map was found for this bug. If you would like meaningful backtraces, please upload a source map using the Squash JavaScript client library.
+    - when /\.java$/
+      p.alert.info No Java renamelog was found for this bug. If you would like more meaningful backtraces, please upload a renamelog.xml file using the Squash Java deobfuscator.
+    - else
+      p.alert.error The backtraces for this bug cannot be displayed because they are in an unknown format.
+
+
+= tab_header do
+  ul.tab-header
+    li.active= link_to "History", '#history', rel: 'tab'
+    - if @bug.blamed_revision
+      li= link_to 'Git Blame', '#blame', rel: 'tab'
+    - if @bug.resolution_revision
+      li= link_to 'The Fix', '#fix', rel: 'tab'
+    - if current_user.role(@project)
+      li= link_to 'Management', '#management', rel: 'tab'
+    li= link_to 'Notifications', '#notifications', rel: 'tab'
+    li= link_to "Comments #{'('+number_with_delimiter(@bug.comments_count)+')' if @bug.comments_count > 0}", '#comments', rel: 'tab'
+    li= link_to 'Aggregation', '#aggregation', rel: 'tab'
+    li.with-table= link_to "Occurrences #{'('+number_with_delimiter(@bug.occurrences_count)+')' if @bug.occurrences_count > 0}", '#occurrences', rel: 'tab'
+
+= tab_container do
+  .tab-content.tab-primary
+    div.active#history
+      = render 'squash/bugs/history'
+    - if @bug.blamed_revision
+      div#blame
+        = render 'squash/bugs/blame'
+    - if @bug.resolution_revision
+      div#fix
+        = render 'squash/bugs/fix'
+    - if current_user.role(@project)
+      div#management
+        = render 'squash/bugs/management'
+    div#notifications
+      = render 'squash/bugs/notifications'
+    div#comments
+      = render 'squash/bugs/comments'
+    div#aggregation
+      = render 'squash/bugs/aggregation'
+    div.with-table#occurrences
+      = render 'squash/bugs/occurrences'
