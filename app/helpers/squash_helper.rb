@@ -35,11 +35,11 @@ module SquashHelper
     end
   end
 
-  def tab_header(&blocki)
+  def tab_header(&block)
     render 'squash/shared/tab_header', tab_header_content: capture(&block)
   end
 
-  def tab_container(&blocki)
+  def tab_container(&block)
     render 'squash/shared/tab_container', tab_content: capture(&block)
   end
 

@@ -6,19 +6,12 @@ li.with-dropdown
     - elsif current_user.memberships.count > 10
       - current_user.memberships.order('created_at DESC').limit(10).includes(:project).map(&:project).each do |project|
         li= link_to project.name, project
-      li= link_to 'More…', projects_url
+      li= link_to 'More…', squash_projects_url
       li.divider
     - else
       - current_user.memberships.order('created_at DESC').includes(:project).map(&:project).each do |project|
         li= link_to project.name, project
       li.divider
-    li= link_to current_user.memberships.count == 0 ? "All Projects" : "Other Project", projects_url(anchor:'find')
+    li= link_to current_user.memberships.count == 0 ? "All Projects" : "Other Project", squash_projects_url(anchor:'find')
     li
-      - form_for current_user.owned_projects.build, url: projects_url(format: 'json'), id: "new_project-#{suffix}" do |f|
-        p New Project
-        = f.text_field :name, placeholder: ::Project.human_attribute_name(:name), required: true
-        = f.text_field :repository_url, placeholder: ::Project.human_attribute_name(:repository_url), required: true
-        p.help-block
-          strong Note:
-          ' This is the URL you would use with git-clone, not the GitHub web page for the repository.
-        = f.submit class: 'default'
+      = render 'squash/projects/new'

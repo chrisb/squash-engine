@@ -4,7 +4,7 @@ nav.container.full-size-only
     - if logged_in?
       = render 'squash/shared/navbar_projects', suffix: 'large'
       = render 'squash/shared/navbar_environments', suffix: 'large' if @project
-      li#quicknav-container= input_tag type: 'search', id: 'quicknav', placeholder: 'Search'
+      li#quicknav-container= search_field :q, id: 'quicknav', placeholder: 'Search'
       li= link_to 'My Account', account_url
       li= link_to content_tag(:i,nil,class:'icon-signout').html_safe, logout_url
     - else

@@ -236,7 +236,7 @@ module Views
               current_user.memberships.order('created_at DESC').limit(10).includes(:project).map(&:project).each do |project|
                 li { a project.name, href: project_url(project) }
               end
-              li { a "More…", href: projects_url }
+              li { a "More…", href: squash_projects_url }
               li class: 'divider'
             else
               current_user.memberships.order('created_at DESC').includes(:project).map(&:project).each do |project|

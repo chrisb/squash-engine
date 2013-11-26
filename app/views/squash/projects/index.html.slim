@@ -16,7 +16,7 @@
       table#assigned-bugs
     #find
       .inset-content
-        p= "To change your project membership or leave a project, use the #{link_to 'My Account', account_url} page."
+        p= "To change your project membership or leave a project, use the #{link_to 'My Account', squash_account_url} page.".html_safe
         form.whitewashed
-          = input_tag type: 'search', id: 'find-project', placeholder: 'Find a Project'
+          = search_field :q, id: 'find-project', placeholder: 'Find a Project'
         ul.project-search-results#find-project-search-results

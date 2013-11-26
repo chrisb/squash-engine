@@ -30,7 +30,7 @@
   #projects
     / projects
     form.whitewashed do
-      = input_tag type: 'search', id: 'project-filter', placeholder: 'Find a project'
+      = search_field :q, id: 'project-filter', placeholder: 'Find a project'
       ul.project-search-results#project-results
   #emails
     / emails

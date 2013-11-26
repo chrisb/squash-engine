@@ -56,7 +56,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'git'
   s.add_dependency 'user-agent'
   s.add_dependency 'safe_yaml'
-  s.add_dependency 'erector'
+  # s.add_dependency 'erector'
   s.add_dependency 'kramdown'
   s.add_dependency 'yard'
 
