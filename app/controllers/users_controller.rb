@@ -25,12 +25,12 @@ class UsersController < ApplicationController
   def index
     return respond_with([]) if params[:query].blank?
 
-    @users = User.prefix(params[:query]).limit(10).order('username ASC')
+    @users = Squash::User.prefix(params[:query]).limit(10).order('username ASC')
 
     last = params[:last].present? ? User.find_by_username(params[:last]) : nil
     @users = @users.where(infinite_scroll_clause('username', 'ASC', last, 'username')) if last
 
-    project = params[:project_id].present? ? Project.find_from_slug!(params[:project_id]) : nil
+    project = params[:project_id].present? ? Squash::Project.find_from_slug!(params[:project_id]) : nil
     respond_with decorate(@users, project)
   end
 

@@ -54,7 +54,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html # index.html.rb
       format.json do
-        @projects = Project.includes(:owner).order('id DESC').limit(25)
+        @projects = Squash::Project.includes(:owner).order('id DESC').limit(25)
         @projects = @projects.prefix(params[:query]) if params[:query].present?
         render json: decorate(@projects).to_json
       end
@@ -212,7 +212,7 @@ class ProjectsController < ApplicationController
   private
 
   def find_project
-    @project = Project.find_from_slug!(params[:id])
+    @project = Squash::Project.find_from_slug!(params[:id])
     class << @project
       include ProjectAdditions
     end

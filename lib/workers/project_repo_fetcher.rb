@@ -23,7 +23,7 @@ class ProjectRepoFetcher
   #   updated.
 
   def self.perform(project_id)
-    new(Project.find(project_id)).perform
+    new(Squash::Project.find(project_id)).perform
   end
 
   # Creates a new instance.

@@ -65,7 +65,7 @@ describe ProjectsController do
     context '[authenticated]' do
       before :each do
         login_as(@user = FactoryGirl.create(:user))
-        Project.delete_all
+        Squash::Project.delete_all
       end
 
       it "should create the new project" do
@@ -122,7 +122,7 @@ describe ProjectsController do
 
   describe "#update" do
     before :each do
-      Project.delete_all
+      Squash::Project.delete_all
       @project = FactoryGirl.create(:project, repository_url: 'git@github.com:RISCfuture/better_caller.git')
     end
 

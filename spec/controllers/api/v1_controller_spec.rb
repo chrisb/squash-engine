@@ -20,7 +20,7 @@ describe Api::V1Controller do
 
   describe "#notify", fdoc: '/notify' do
     before :all do
-      Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
+      Squash::Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
       @project   = FactoryGirl.create(:project, repository_url: "git@github.com:RISCfuture/better_caller.git")
       @commit    = @project.repo.object('HEAD^')
 
@@ -77,7 +77,7 @@ describe Api::V1Controller do
 
   describe "#deploy", fdoc: '/deploy' do
     before :all do
-      Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
+      Squash::Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
       @project = FactoryGirl.create(:project, repository_url: "git@github.com:RISCfuture/better_caller.git")
     end
 
@@ -201,7 +201,7 @@ describe Api::V1Controller do
 
   describe "#deobfuscation", fdoc: '/deobfuscation' do
     before :all do
-      Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
+      Squash::Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
       @project = FactoryGirl.create(:project, repository_url: "git@github.com:RISCfuture/better_caller.git")
     end
 

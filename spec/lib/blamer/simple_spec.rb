@@ -49,7 +49,7 @@ describe Blamer::Simple do
   end
 
   it "should not touch the Git repo at all when processing an occurrence" do
-    Project.where(repository_url: 'git@github.com:RISCfuture/better_caller.git').delete_all
+    Squash::Project.where(repository_url: 'git@github.com:RISCfuture/better_caller.git').delete_all
     @project   = FactoryGirl.create(:project, repository_url: 'git@github.com:RISCfuture/better_caller.git')
     @commit    = @project.repo.object('HEAD^')
 

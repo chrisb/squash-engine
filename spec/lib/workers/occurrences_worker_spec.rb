@@ -18,7 +18,7 @@ THIS_FILE = Pathname.new(__FILE__).relative_path_from(Rails.root).to_s
 
 describe OccurrencesWorker do
   before :all do
-    Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
+    Squash::Project.where(repository_url: "git@github.com:RISCfuture/better_caller.git").delete_all
     @project   = FactoryGirl.create(:project, repository_url: "git@github.com:RISCfuture/better_caller.git")
     @commit    = @project.repo.object('HEAD^')
 
@@ -78,7 +78,7 @@ describe OccurrencesWorker do
 
   describe "#perform" do
     it "attempt to git-fetch if the revision doesn't exist, then skip it if the revision STILL doesn't exist" do
-      Project.stub(:find_by_api_key!).and_return(@project)
+      Squash::Project.stub(:find_by_api_key!).and_return(@project)
       @project.repo.should_receive(:fetch).once
       -> { OccurrencesWorker.new(@params.merge('revision' => '10b04c1ed63bec207db6ebdf14d31d2a86006cb4')).perform }.should raise_error(/Unknown revision/)
     end

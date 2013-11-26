@@ -108,7 +108,7 @@ class EmailsController < ApplicationController
   private
 
   def find_project
-    @project = Project.find_from_slug!(params[:project_id]) if params.include?('project_id')
+    @project = Squash::Project.find_from_slug!(params[:project_id]) if params.include?('project_id')
   end
 
   def find_email

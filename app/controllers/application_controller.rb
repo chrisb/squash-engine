@@ -216,7 +216,7 @@ class ApplicationController < ActionController::Base
   private
 
   def find_project
-    @project = Project.find_from_slug!(params[:project_id])
+    @project = Squash::Project.find_from_slug!(params[:project_id])
   end
 
   def find_environment

@@ -16,11 +16,11 @@ require 'spec_helper'
 
 describe SearchController do
   before :all do
-    Environment.delete_all
-    Project.delete_all
-    Slug.delete_all
-    User.delete_all
-    Rails.cache.clear
+    Squash::Environment.delete_all
+    Squash::Project.delete_all
+    Squash::Slug.delete_all
+    Squash::User.delete_all
+    Squash::Rails.cache.clear
 
     @project     = FactoryGirl.create(:project, name: 'Example Project')
     @environment = FactoryGirl.create(:environment, name: 'production', project: @project)
