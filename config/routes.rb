@@ -13,6 +13,11 @@
 #    limitations under the License.
 
 Rails.application.routes.draw do
+  post 'api/1.0/notify' => 'api/v1#notify'
+  post 'api/1.0/deploy' => 'api/v1#deploy'
+  post 'api/1.0/symbolication' => 'api/v1#symbolication'
+  post 'api/1.0/deobfuscation' => 'api/v1#deobfuscation'
+  post 'api/1.0/sourcemap' => 'api/v1#sourcemap'
   namespace 'squash', path: '' do
     # resources :projects, only: [ :new ]
     resources :projects do
@@ -65,12 +70,6 @@ Rails.application.routes.draw do
     post 'login' => 'sessions#create'
     get 'logout' => 'sessions#destroy'
     post 'signup' => 'users#create' if Squash::Configuration.authentication.strategy == 'password'
-
-    post 'api/1.0/notify' => 'api/v1#notify'
-    post 'api/1.0/deploy' => 'api/v1#deploy'
-    post 'api/1.0/symbolication' => 'api/v1#symbolication'
-    post 'api/1.0/deobfuscation' => 'api/v1#deobfuscation'
-    post 'api/1.0/sourcemap' => 'api/v1#sourcemap'
 
     get 'search/suggestions' => 'search#suggestions'
     get 'search' => 'search#search'

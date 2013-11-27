@@ -47,3 +47,6 @@
         p= button_to "Delete", squash_project_url(@project), method: :delete, data: { confirm: "Are you SURE you want to delete the project #{@project.name}?" }, class: 'button radius alert small'
       - elsif !current_user.role(@project).nil?
         p= button_to 'Leave Project', squash_project_my_membership_url(@project), :'data-sqmethod' => 'DELETE', class: 'warning'
+
+= javascript_tag do
+  = render template: 'squash/projects/show.js.erb'

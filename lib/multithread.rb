@@ -58,7 +58,10 @@ module Multithread
   # @yield The code to run in a separate thread.
 
   def spinoff(name, priority, user_data={})
-    if Squash::Application.config.allow_concurrency
+    if Squash::Engine.config.allow_concurrency
+    @queue = PriorityQueue.new(
+      Squash::Configuration.concurrency[:multithread][:priority_threshold],
+      Squash::Configuration.concurrency[:multithread][:max_threads]) unless @queue
       @queue.enq(name, priority) { with_connection { with_dogfood(user_data) { yield } } }
     else
       yield

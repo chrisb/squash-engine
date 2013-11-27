@@ -39,7 +39,7 @@ module BackgroundRunner
     end
 
     def self.priority(job_name)
-      Squash::Configuration.concurrency.multithread.priority[job_name.to_s]
+      Squash::Configuration.concurrency.multithread[:priority][job_name.to_s]
     end
   end
 end
