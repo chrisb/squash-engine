@@ -87,8 +87,8 @@ module Squash
     end
 
     def invalidate_cache
-      Rails.cache.delete "Slug/#{sluggable_type}/#{sluggable_id}/slug"
-      Rails.cache.delete "Slug/#{sluggable_type}/#{sluggable_id}/slug_with_path"
+      ::Rails.cache.delete "Slug/#{sluggable_type}/#{sluggable_id}/slug"
+      ::Rails.cache.delete "Slug/#{sluggable_type}/#{sluggable_id}/slug_with_path"
     end
   end
 end

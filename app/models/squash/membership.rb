@@ -48,7 +48,7 @@ module Squash
   class Membership < Squash::Record
     self.primary_keys = :user_id, :project_id
 
-    belongs_to :user, inverse_of: :memberships
+    belongs_to :user #, inverse_of: :memberships
     belongs_to :project, inverse_of: :memberships
 
     attr_readonly :user, :project

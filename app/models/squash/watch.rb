@@ -27,7 +27,7 @@ module Squash
   class Watch < Squash::Record
     self.primary_keys = :user_id, :bug_id
 
-    belongs_to :user, inverse_of: :watches
+    belongs_to :user #, inverse_of: :watches
     belongs_to :bug, inverse_of: :watches
 
     validates :user,

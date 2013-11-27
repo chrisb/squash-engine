@@ -39,7 +39,7 @@
 
 module Squash
   class NotificationThreshold < Squash::Record
-    belongs_to :user, inverse_of: :notification_thresholds
+    belongs_to :user #, inverse_of: :notification_thresholds
     belongs_to :bug, inverse_of: :notification_thresholds
 
     self.primary_keys = [:user_id, :bug_id]

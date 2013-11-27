@@ -54,7 +54,7 @@
 
 module Squash
   class Email < Squash::Record
-    belongs_to :user, inverse_of: :emails
+    belongs_to :user #, inverse_of: :emails
     belongs_to :project, inverse_of: :emails
 
     validates :email,

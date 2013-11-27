@@ -104,7 +104,7 @@ module Squash
     # to the `repository_url` attribute if it cannot.
     attr_accessor :validate_repo_connectivity
 
-    belongs_to :owner, class_name: 'User', inverse_of: :owned_projects
+    # belongs_to :owner, class_name: Squash::Engine.config.user_model, inverse_of: :owned_projects
     belongs_to :default_environment, class_name: 'Environment', inverse_of: :default_project
 
     has_many :environments, dependent: :delete_all, inverse_of: :project
@@ -162,8 +162,8 @@ module Squash
                      :pagerduty_service_key
 
     after_save do |obj|
-      obj.memberships.where(user_id: obj.owner_id).create_or_update!(admin: true) if owner_id_changed?
-      obj.memberships.where(user_id: obj.owner_id_was).create_or_update!(admin: true) if owner_id_was
+      obj.memberships.where(user_id: obj.owner_id).first_or_create.update_attributes!(admin: true) if owner_id_changed?
+      obj.memberships.where(user_id: obj.owner_id_was).first_or_create.update_attributes!(admin: true) if owner_id_was
     end
     before_validation :set_commit_url_format
 

@@ -13,7 +13,7 @@
 #    limitations under the License.
 
 Rails.application.routes.draw do
-  namespace 'squash', path: '' do
+  namespace 'squash', path: '', as: nil do
     resources :projects, only: [ :new ]
     resources :projects do
       member { patch :rekey }

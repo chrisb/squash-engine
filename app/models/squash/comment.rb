@@ -47,7 +47,7 @@
 
 module Squash
   class Comment < Squash::Record
-    belongs_to :user, inverse_of: :comments
+    belongs_to :user #, inverse_of: :comments
     belongs_to :bug, inverse_of: :comments
 
     attr_readonly :user, :bug, :number

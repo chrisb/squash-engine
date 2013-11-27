@@ -27,7 +27,7 @@ module Squash
   class UserEvent < Squash::Record
     self.primary_keys = [:user_id, :event_id]
 
-    belongs_to :user, inverse_of: :user_events
+    belongs_to :user #, inverse_of: :user_events
     belongs_to :event, inverse_of: :user_events
 
     validates :user,
