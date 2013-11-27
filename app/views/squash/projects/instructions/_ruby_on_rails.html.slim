@@ -1,30 +1,25 @@
- p do
-          text "Add the "
-          strong "squash_rails"
-          text " gem to your Gemfile, then configure Squash like so:"
-        end
-        pre <<-RUBY, class: 'brush: ruby; light: true'
-Squash::Ruby.configure :api_host => '#{request.protocol + request.host_with_port}',
-                       :api_key => '#{@project.api_key}',
-                       :disabled => (Rails.env.development? || Rails.env.test?)
-        RUBY
+p
+  ' Add the
+  strong squash_rails
+  ' gem to your Gemfile, then configure Squash like so:
+  pre[class="brush: ruby; light: true"]
+    | Squash::Ruby.configure :api_host => '#{request.protocol + request.host_with_port}',
+    | :api_key => '#{@project.api_key}',
+    | :disabled => (Rails.env.development? || Rails.env.test?)
 
-        p "(This code is specific to Rails 3 but Squash is also compatible with Rails 2.)"
+p This code is specific to Rails 3 but Squash is also compatible with Rails 2.
 
-        p do
-          text "Enable automatic exception notification as part of the request process by extending your "
-          code "ApplicationController"
-          text ":"
-        end
-        pre <<-RUBY.chomp, class: 'brush: ruby; light: true'
-class ApplicationController < ActionController::Base
-  include Squash::Ruby::ControllerMethods
-  enable_squash_client
-end
-        RUBY
+p
+  ' Enable automatic exception notification as part of the request process by extending your
+  code ApplicationController
+  ' :
+  pre[class="brush: ruby; light: true"]
+    | class ApplicationController < ActionController::Base
+    |   include Squash::Ruby::ControllerMethods
+    |   enable_squash_client
+    | end
 
-        p do
-          text "See the "
-          a "Pure Ruby", rel: 'accordion', href: '#ruby'
-          text " section for more information."
-        end
+p
+  ' See the
+  = link_to 'Pure Ruby', '#pure_ruby', rel: 'accordion'
+  ' section for more information."

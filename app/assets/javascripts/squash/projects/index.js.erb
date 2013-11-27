@@ -12,6 +12,8 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+<% url = ::Rails.application.routes.url_helpers %>
+
 $(document).ready(function() {
   new PageManager().setup();
 });
@@ -31,7 +33,7 @@ function PageManager() {
 
   this.processAnyProjectSearchResults = function(query) {
     var self = this;
-    $.ajax('<%= squash_projects_url(format: 'json') %>?query=' + encodeURIComponent(query), {
+    $.ajax('<%= url.squash_projects_path(format: 'json') %>?query=' + encodeURIComponent(query), {
       type:    'GET',
       success: function(results) {
         var resultList = $('#find-project-search-results');
@@ -76,7 +78,7 @@ function PageManager() {
 
   this.setupWatchedBugsTable = function() {
     var table = new SortableTable($('#watched-bugs'),
-      "<%= account_bugs_url(format: 'json', type: 'watched') %>",
+      "<%= url.squash_account_bugs_path(format: 'json', type: 'watched') %>",
       [
         { key: 'project_and_environment', title: "Project", sortable: false, htmlGenerator: function(bug) {
           var span = $('<span/>').text(bug.environment.name);
@@ -129,7 +131,7 @@ function PageManager() {
 
   this.setupAssignedBugsTable = function() {
       new SortableTable($('#assigned-bugs'),
-                        "<%= squash_account_bugs_url(format: 'json') %>",
+                        "<%= url.squash_account_bugs_path(format: 'json') %>",
                         [
                           { key: 'project_and_environment', title: "Project", sortable: false, htmlGenerator: function(bug) {
                             var span = $('<span/>').text(bug.environment.name);
@@ -173,6 +175,6 @@ function PageManager() {
     };
 
   this.setupMyFeed = function() {
-    new Feed("<%= squash_account_events_url(format: 'json') %>", $('#events'), {bugHeader: true});
+    new Feed("<%= url.squash_account_events_path(format: 'json') %>", $('#events'), {bugHeader: true});
   };
 }

@@ -27,39 +27,39 @@
 module AuthenticationHelpers
   extend ActiveSupport::Concern
 
-  included do
-    helper_method :current_user, :logged_in?, :logged_out?
-  end
+  # included do
+  #   helper_method :current_user, :logged_in?, :logged_out?
+  # end
 
   # Clears a user session.
 
-  def log_out
-    session[:user_id] = nil
-    @current_user     = nil
-  end
+  # def log_out
+  #   session[:user_id] = nil
+  #   @current_user     = nil
+  # end
 
   # @return [User, nil] The currently logged-in User, or `nil` if the session is
   #   unauthenticated.
 
-  def current_user
-    if session[:user_id] then
-      @current_user ||= User.find_by_id(session[:user_id])
-    else
-      nil
-    end
-  end
+  # def current_user
+  #   if session[:user_id] then
+  #     @current_user ||= User.find_by_id(session[:user_id])
+  #   else
+  #     nil
+  #   end
+  # end
 
   # @return [true, false] Whether or not the session is authenticated.
+  #
+  # def logged_in?
+  #   !current_user.nil?
+  # end
 
-  def logged_in?
-    !current_user.nil?
-  end
-
-  # @return [true, false] Whether or not the session is unauthenticated.
-
-  def logged_out?
-    current_user.nil?
-  end
+  # # @return [true, false] Whether or not the session is unauthenticated.
+  #
+  # def logged_out?
+  #   current_user.nil?
+  # end
 
   protected
 
@@ -71,19 +71,20 @@ module AuthenticationHelpers
   #   empty body.
 
   def login_required
-    if logged_in? then
-      return true
-    else
-      respond_to do |format|
-        format.xml { head :unauthorized }
-        format.json { head :unauthorized }
-        format.atom { head :unauthorized }
-        format.html do
-          redirect_to login_url(next: request.fullpath), notice: t('controllers.authentication.login_required')
-        end
-      end
-      return false
-    end
+    authenticate_user!
+    # if user_signed_in? then
+    #   return true
+    # else
+    #   respond_to do |format|
+    #     format.xml { head :unauthorized }
+    #     format.json { head :unauthorized }
+    #     format.atom { head :unauthorized }
+    #     format.html do
+    #       redirect_to login_url(next: request.fullpath), notice: t('controllers.authentication.login_required')
+    #     end
+    #   end
+    #   return false
+    # end
   end
 
   # A `before_filter` that requires an unauthenticated session to continue. If

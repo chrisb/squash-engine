@@ -2,16 +2,9 @@
   = link_to '&times;'.html_safe, '#', class: 'close'
   h1= "Configure #{@project.name} to use Squash"
   .modal-body
-    = accordion 'configure-clients' do |a|
-      = a.accordion_item 'ruby-on-rails', "Ruby on Rails"
-        /= ruby_on_rails
-      = a.accordion_item 'ruby', "Pure Ruby")
-        /= pure_ruby
-      = a.accordion_item 'ios', "Cocoa + Objective-C (iOS)"
-        /= cocoa_ios
-      = a.accordion_item 'osx', "Cocoa + Objective-C (Mac OS X)"
-        /= cocoa_osx
-      = a.accordion_item 'javascript', "JavaScript"
-        /= javascript_client
-      = a.accordion_item 'java', "Java (Generic)"
-        /= java
+    dl.accordion[data-accordion]
+      - libs = [ 'Ruby on Rails' ] #, 'Pure Ruby', 'Cocoa + Objective-C (iOS)', 'Cocoa + Objective-C (Mac OS X)', 'JavaScript', 'Java (Generic)' ]
+      - libs.each do |lib|
+        dd
+          = link_to lib, "##{lib.parameterize}"
+          .content[id=lib.parameterize]= render "squash/projects/instructions/#{lib.parameterize.underscore}"

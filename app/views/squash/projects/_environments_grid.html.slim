@@ -4,9 +4,9 @@
     .row
       - environments.each_with_index do |environment, idx|
         .six.columns
-          div[class=environment ? 'environment' : '']
+          div[class=(environment ? 'environment' : '')]
             - if environment
-              h3= link_to environment.name, project_environment_bugs_url(@project, environment)
+              h3= link_to environment.name, squash_project_environment_bugs_url(@project, environment)
               p.info
                 = pluralize_with_delimiter(environment.bugs_count, 'bug')
                 - if [:admin, :owner].include?(current_user.role(@project))

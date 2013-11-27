@@ -25,7 +25,7 @@ class NotificationMailer < ActionMailer::Base
   helper :mail
 
   default from: Squash::Configuration.mailer.from
-  default_url_options.merge! Squash::Configuration.mailer.default_url_options.symbolize_keys
+  # default_url_options.merge! Squash::Configuration.mailer.default_url_options.symbolize_keys
 
   # Creates a message addressed to the {Project}'s `all_mailing_list` informing
   # of a new Bug.

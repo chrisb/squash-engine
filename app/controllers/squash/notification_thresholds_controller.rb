@@ -16,7 +16,7 @@
 # for a Bug.
 
 module Squash
-  class NotificationThresholdsController < ApplicationController
+  class NotificationThresholdsController < SquashController
     before_filter :find_project
     before_filter :find_environment
     before_filter :find_bug

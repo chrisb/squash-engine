@@ -14,7 +14,7 @@
 
 # Controller that works with the current {User}.
 module Squash
-  class AccountsController < ApplicationController
+  class AccountsController < SquashController
     respond_to :html
 
     # Displays information about the User and his/her Memberships.

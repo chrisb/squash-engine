@@ -24,7 +24,7 @@
 # |:-------------|:--------------------|
 # | `project_id` | The Project's slug. |
 module Squash
-  class EnvironmentsController < ApplicationController
+  class EnvironmentsController < SquashController
     before_filter :find_project
     before_filter :find_environment, only: :update
     before_filter :admin_login_required, only: :update
@@ -57,7 +57,7 @@ module Squash
 
     def update
       @environment.update_attributes environment_params
-      respond_with @environment, location: project_url(@project)
+      respond_with @environment, location: squash_project_url(@project)
     end
 
     private

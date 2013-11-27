@@ -26,7 +26,7 @@
 # | `environment_id` | The Environment name. |
 
 module Squash
-  class BugsController < ApplicationController
+  class BugsController < SquashController
     include ActionView::Helpers::NumberHelper
 
     # Maps values for the `sort` query parameters to an array of the `bugs` column

@@ -28,7 +28,7 @@ require 'csv'
 # | `environment_id` | The {Environment} name.  |
 # | `bug_id`         | The Bug number (not ID). |
 module Squash
-  class OccurrencesController < ApplicationController
+  class OccurrencesController < SquashController
     include ActionView::Helpers::NumberHelper
 
     # A map of client library identifiers to those fields which are relevant

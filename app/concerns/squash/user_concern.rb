@@ -29,20 +29,6 @@ module Squash
       scope :prefix, ->(query) { where("LOWER(username) LIKE ?", query.downcase.gsub(/[^a-z0-9\-_]/, '') + '%') }
     end
 
-    # @return [String] The user's full name, or as much of it as available, or the
-    #   `username`.
-
-    def name
-      return username unless first_name.present? || last_name.present?
-      I18n.t('models.user.name', first_name: first_name, last_name: last_name).strip
-    end
-
-    # @return [String] The user's company email address.
-
-    def email
-      @email ||= (emails.loaded? ? emails.detect(&:primary).email : emails.primary.first.email)
-    end
-
     # @return [String] The URL to the user's Gravatar.
 
     def gravatar
@@ -89,9 +75,10 @@ module Squash
     end
 
     # @private
-    def to_param() username end
+    # def to_param() username end
 
     def as_json(options=nil)
+      puts "~~~>> KLELL!!! as_json IN DA USER CONCERNIO!!"
       options ||= {}
 
       options[:except] = Array.wrap(options[:except])
@@ -103,6 +90,7 @@ module Squash
       options[:methods] << :email
       options[:methods] << :gravatar
 
+      puts "~~~>> KLELL!!! DAHH!! GONNA SEND SUPER BROSEF!!"
       super options
     end
 
@@ -118,5 +106,6 @@ module Squash
 
       super options
     end
+
   end
 end

@@ -25,7 +25,7 @@
 # case-insensitive.
 
 module Squash
-  class SearchController < ApplicationController
+  class SearchController < SquashController
 
     # Maximum number of suggestions to return.
     MAX_SUGGESTIONS = 10
@@ -61,23 +61,23 @@ module Squash
             url = user_url(user) if user
           else
             project = find_projects(words[0]).only.try!(:sluggable)
-            url = project_url(project) if project
+            url = squash_project_url(project) if project
           end
         when 2
           project = find_projects(words[0]).only.try!(:sluggable)
           env = find_environments(project, words[1]).only if project
-          url = project_environment_bugs_url(project, env) if env
+          url = squash_project_environment_bugs_url(project, env) if env
         when 3
           project = find_projects(words[0]).only.try!(:sluggable)
           env = find_environments(project, words[1]).only if project
           bug = env.bugs.find_by_number(words[2].to_i) if env
-          url = project_environment_bug_url(project, env, bug) if bug
+          url = squash_project_environment_bug_url(project, env, bug) if bug
         when 4
           project = find_projects(words[0]).only.try!(:sluggable)
           env = find_environments(project, words[1]).only if project
           bug = env.bugs.find_by_number(words[2].to_i) if env
           occurrence = bug.occurrences.find_by_number(words[3].to_i) if bug
-          url = project_environment_bug_occurrence_url(project, env, bug, occurrence) if occurrence
+          url = squash_project_environment_bug_occurrence_url(project, env, bug, occurrence) if occurrence
       end
 
       url ? render(text: url) : head(:ok)
@@ -134,7 +134,7 @@ module Squash
                           projects.map do |project|
                             {
                                 project: project.as_json,
-                                url:     project_url(project),
+                                url:     squash_project_url(project),
                                 type:    'project',
                             }
                           end
@@ -147,7 +147,7 @@ module Squash
                               project:     project.as_json,
                               environment: env.as_json,
                               type:        'environment',
-                              url:         project_environment_bugs_url(project, env)
+                              url:         squash_project_environment_bugs_url(project, env)
 
 
                           }
@@ -158,7 +158,7 @@ module Squash
                         bug = env.bugs.find_by_number(words[2].to_i) if env
                         [{
                              type:        'bug',
-                             url:         project_environment_bug_url(project, env, bug),
+                             url:         squash_project_environment_bug_url(project, env, bug),
                              project:     project.as_json,
                              environment: env.as_json,
                              bug:         bug.as_json
@@ -170,7 +170,7 @@ module Squash
                         occurrence = bug.occurrences.find_by_number(words[3].to_i) if bug
                         [{
                              type:        'occurrence',
-                             url:         project_environment_bug_occurrence_url(project, env, bug, occurrence),
+                             url:         squash_project_environment_bug_occurrence_url(project, env, bug, occurrence),
                              project:     project.as_json,
                              environment: env.as_json,
                              bug:         bug.as_json,

@@ -54,7 +54,12 @@ jQuery.fn.liveUpdate = (endpoint, handler, options) ->
 
   if this[0].nodeName.toLowerCase() == 'time'
     time = new Date(Date.parse(element.attr('datetime')))
-    element.attr('title', time.toLocaleString()).tooltip()
+    # <span data-tooltip class="has-tip" title="Tooltips are awesome, you should totally use them!">...</span>
+    # foundation style
+    element.attr('title', time.toLocaleString()) #.tooltip()
+    element.attr('data-tooltip','')
+    element.addClass('has-tip')
+    $(document).foundation()
     updater = ->
       time = new Date(Date.parse(element.attr('datetime')))
       element.text "#{timeAgoInWords(time)} ago"

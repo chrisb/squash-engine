@@ -57,9 +57,25 @@ module Squash
     include Squash::UserConcern
     include HasMetadataColumn
     include "#{Squash::Configuration.authentication.strategy}_authentication".camelize.constantize
+
     has_metadata_column(
         first_name: {length: {maximum: 100}, allow_nil: true},
         last_name:  {length: {maximum: 100}, allow_nil: true}
     )
+
+    # @return [String] The user's full name, or as much of it as available, or the
+    #   `username`.
+
+    def name
+      return username unless first_name.present? || last_name.present?
+      I18n.t('models.user.name', first_name: first_name, last_name: last_name).strip
+    end
+
+    # @return [String] The user's company email address.
+
+    def email
+      @email ||= (emails.loaded? ? emails.detect(&:primary).email : emails.primary.first.email)
+    end
+
   end
 end

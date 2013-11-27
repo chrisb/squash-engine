@@ -28,7 +28,7 @@
 # | `bug_id`         | The Bug number (not ID). |
 
 module Squash
-  class CommentsController < ApplicationController
+  class CommentsController < SquashController
     before_filter :find_project
     before_filter :find_environment
     before_filter :find_bug

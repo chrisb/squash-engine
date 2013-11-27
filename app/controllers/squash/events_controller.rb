@@ -26,7 +26,7 @@
 # | `environment_id` | The {Environment} name.  |
 # | `bug_id`         | The Bug number (not ID). |
 module Squash
-  class EventsController < ApplicationController
+  class EventsController < SquashController
     include EventDecoration
 
     before_filter :find_project

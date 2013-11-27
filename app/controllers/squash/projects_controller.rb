@@ -15,7 +15,7 @@
 # Controller for working with {Project Projects}.
 
 module Squash
-  class ProjectsController < ApplicationController
+  class ProjectsController < SquashController
     before_filter :find_project, except: [:index, :create, :new]
     before_filter :admin_login_required, only: [:update, :rekey]
     before_filter :owner_login_required, only: :destroy
@@ -187,7 +187,7 @@ module Squash
     def rekey
       @project.create_api_key
       @project.save!
-      redirect_to edit_project_url(@project), flash: {success: t('controllers.projects.rekey.success', name: @project.name, api_key: @project.api_key)}
+      redirect_to edit_squash_project_url(@project), flash: {success: t('controllers.projects.rekey.success', name: @project.name, api_key: @project.api_key)}
     end
 
     # Deletes a Project, and all associated Environments, Bugs, Occurrences, etc.
@@ -224,11 +224,12 @@ module Squash
 
     def decorate(projects)
       decorate_block = ->(project) {
+        owner_url = respond_to?(:user_url) ? user_url(project.owner) : squash_user_url(project.owner)
         project.as_json.merge(
-            owner:    project.owner.as_json.merge(url: user_url(project.owner)),
+            owner:    owner_url,
             role:     current_user.role(project),
-            url:      project_url(project),
-            join_url: join_project_my_membership_url(project))
+            url:      squash_project_url(project),
+            join_url: join_squash_project_my_membership_url(project))
       }
 
       if projects.kind_of?(Enumerable)  || projects.kind_of?(ActiveRecord::Relation)

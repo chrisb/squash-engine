@@ -14,7 +14,7 @@
 
 # Controller for working with a {User}'s {Email Emails}.
 module Squash
-  class EmailsController < ApplicationController
+  class EmailsController < SquashController
     before_filter :find_project
     before_filter :find_email, only: :destroy
     respond_to :json

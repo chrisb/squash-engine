@@ -1,6 +1,7 @@
 - @page_title = @project.name
 - @breadcrumbs = [ @project ]
 
+= render 'squash/projects/header'
 = render 'squash/projects/environments_grid'
 
 / project_info
@@ -11,9 +12,9 @@
       h5 Owner
       .profile-widget
         = image_tag @project.owner.gravatar
-        h5= link_to @project.owner.name, user_url(@project.owner)
+        h5= link_to @project.owner.name, respond_to?(:user_url) ? user_url(@project.owner) : squash_user_url(@project.owner)
         div
-          strong= @project.owner.username
+          strong= @project.owner.respond_to?(:username) ? @project.owner.username : @project.owner.name
         div.small= "Created #{l @project.created_at, format: :short_date}"
         div[style='clear:left;']
 
@@ -28,11 +29,11 @@
           = "(#{pluralize_with_delimiter(@project.memberships.where(admin: true).count, 'administrator')})"
 
       h5 Settings
-      p= link_to "Configure and install Squash", edit_project_url(@project) if action_name == 'show'
+      p= link_to "Configure and install Squash", edit_squash_project_url(@project) if action_name == 'show'
       - if current_user.role(@project)
-        p= link_to "Change membership settings", edit_project_my_membership_url(@project)
+        p= link_to "Change membership settings", edit_squash_project_my_membership_url(@project)
       - else
-        p= button_to "Join this team", join_project_my_membership_url(@project), :'data-sqmethod' => 'POST'
+        p= button_to "Join this team", join_squash_project_my_membership_url(@project), :'data-sqmethod' => 'POST'
 
     .twelve.columns
       h5 Members
@@ -43,6 +44,6 @@
         p
           strong Beware!
           ' Deleting this project will delete all environments, all bugs, all occurrences, all comments, and all other data.
-        p= button_to "Delete", project_url(@project), :'data-sqmethod'  => :delete, :'data-sqconfirm' => "Are you SURE you want to delete the project #{@project.name}?", class: 'warning'
+        p= button_to "Delete", squash_project_url(@project), method: :delete, data: { confirm: "Are you SURE you want to delete the project #{@project.name}?" }, class: 'button radius alert small'
       - elsif !current_user.role(@project).nil?
-        p= button_to 'Leave Project', project_my_membership_url(@project), :'data-sqmethod' => 'DELETE', class: 'warning'
+        p= button_to 'Leave Project', squash_project_my_membership_url(@project), :'data-sqmethod' => 'DELETE', class: 'warning'

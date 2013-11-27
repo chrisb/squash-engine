@@ -39,6 +39,9 @@
 # | `kind` | The type of event that occurred.             |
 # | `data` | Freeform, JSON-encoded data about the event. |
 
+require 'json_serialize'
+require 'validates_timeliness'
+
 module Squash
   class Event < Squash::Record
     belongs_to :bug, inverse_of: :events
@@ -47,7 +50,7 @@ module Squash
 
     attr_readonly :bug, :user, :kind, :data
 
-    include JsonSerialize
+    include ::JsonSerialize
     json_serialize data: {}
 
     validates :bug,

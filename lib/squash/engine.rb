@@ -29,6 +29,23 @@ module Squash
       })
     end
 
+    def self.pagerduty
+      @pagerduty_config ||= setup_struct_from_hash({ disabled: true })
+    end
+
+    def self.mailer
+      @mailer_config ||= setup_struct_from_hash({
+        from: 'squash@YOUR_DOMAIN',
+        domain: 'YOUR_DOMAIN',
+        host: 'localhost:3000',
+        protocol: 'http'
+      })
+    end
+
+    def self.javascript_dogfood
+      @javascript_dogfood ||= setup_struct_from_hash(::Rails.env.production? ? { APIHost: 'YOUR_URL' } : {})
+    end
+
     # can't we think of a better name for this?
     def self.dogfood
       @dogfood_config ||= setup_struct_from_hash({
@@ -157,17 +174,17 @@ module Squash
 
     def self.inject_user_concern
       config.user_model.constantize.send :include, Squash::UserAssociations
-      # config.user_model.constantize.send :include, Squash::UserConcern
+      config.user_model.constantize.send :include, Squash::UserConcern
     end
 
     def self.inject_user_associations
       Squash::Project.send :belongs_to, :owner, class_name: config.user_model, inverse_of: :owned_projects
+      Squash::Project.send :has_many, :members, through: :memberships, source: :user, class_name: config.user_model
     end
 
     config.user_model = 'Squash::User' # override with your own
     config.to_prepare &method(:inject_user_concern).to_proc
     config.to_prepare &method(:inject_user_associations).to_proc
-
 
     config.autoload_paths << config.root.join('app', 'models', 'additions')
     config.autoload_paths << config.root.join('app', 'models', 'observers')

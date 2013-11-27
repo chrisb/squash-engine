@@ -1,20 +1,19 @@
 = full_width_section do
-  h1= "Welcome, #{current_user.first_name}"
+  h1= "Welcome, #{current_user.name}"
   = tab_header do
-    ul.tab-header
-      li.active= link_to "My Feed", '#feed', rel: 'tab'
-      li.with-table= link_to "Watched Bugs", '#watched', rel: 'tab'
-      li.with-table= link_to "Assigned Bugs", '#assigned', rel: 'tab'
-      li= link_to "All Projects", '#find', rel: 'tab'
+    dd.active= link_to "My Feed", '#feed', rel: 'tab'
+    dd= link_to "Watched Bugs", '#watched', rel: 'tab'
+    dd= link_to "Assigned Bugs", '#assigned', rel: 'tab'
+    dd= link_to "All Projects", '#find', rel: 'tab'
   = tab_container do
-    #feed.active
+    .content.active#feed
       h3 Recent Activity
       ul#events
-    #watched.with_table
+    .content#watched.with_table
       table#watched-bugs
-    #assigned.with-table
+    .content#assigned.with-table
       table#assigned-bugs
-    #find
+    .content#find
       .inset-content
         p= "To change your project membership or leave a project, use the #{link_to 'My Account', squash_account_url} page.".html_safe
         form.whitewashed

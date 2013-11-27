@@ -1,9 +1,11 @@
+= render 'squash/projects/header'
+
 h3
   span.step-number 1
   ' Modify your code to use Squash.
 p= "Learn #{link_to 'how to add Squash to your project', '#configure-project', rel: 'modal'}. Your API key is: #{content_tag :code, @project.api_key}.".html_safe
-- if [ :owner, :admin ].include?(current_user.role(@project)
-  p= button_to 'Regenerate your API key', rekey_project_url(@project), :'data-sqmethod'  => 'patch', :'data-sqconfirm' => "This will break any existing Squash client integrations. Continue?"
+- if [ :owner, :admin ].include?(current_user.role(@project))
+  p= button_to('Regenerate your API key', rekey_squash_project_url(@project), method: :patch, data: { confirm: "This will break any existing Squash client integrations. Continue?" })
 
 h3
   span.step-number 2

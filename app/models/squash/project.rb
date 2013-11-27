@@ -105,15 +105,14 @@ module Squash
     attr_accessor :validate_repo_connectivity
 
     # belongs_to :owner, class_name: Squash::Engine.config.user_model, inverse_of: :owned_projects
-    belongs_to :default_environment, class_name: 'Environment', inverse_of: :default_project
+    belongs_to :default_environment, class_name: 'Squash::Environment', inverse_of: :default_project
 
-    has_many :environments, dependent: :delete_all, inverse_of: :project
-    has_many :memberships, dependent: :delete_all, inverse_of: :project
-    has_many :members, through: :memberships, source: :user
-    has_many :emails, inverse_of: :project, dependent: :delete_all
+    has_many :environments, class_name: 'Squash::Environment', dependent: :delete_all, inverse_of: :project
+    has_many :memberships, class_name: 'Squash::Membership', dependent: :delete_all, inverse_of: :project
+    has_many :emails, class_name: 'Squash::Email', inverse_of: :project, dependent: :delete_all
 
     include ::Slugalicious
-    slugged :name
+    slugged :name, id_separator: '-'
 
     include HasMetadataColumn
     has_metadata_column(

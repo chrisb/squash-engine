@@ -17,7 +17,7 @@
 # situation where the repository is very slow or inaccessible.
 
 module Squash
-  class CommitsController < ApplicationController
+  class CommitsController < SquashController
     brushes = YAML.load_file(Rails.root.join('data', 'brushes.yml'))
 
     # A map of file extensions to the SyntaxHighlighter brush to use.
