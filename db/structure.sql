@@ -394,7 +394,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: blames; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: blames; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNLOGGED TABLE blames (
@@ -430,7 +430,7 @@ ALTER SEQUENCE blames_id_seq OWNED BY blames.id;
 
 
 --
--- Name: bugs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE bugs (
@@ -489,7 +489,7 @@ ALTER SEQUENCE bugs_id_seq OWNED BY bugs.id;
 
 
 --
--- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE comments (
@@ -524,7 +524,7 @@ ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 
 
 --
--- Name: deploys; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: deploys; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE deploys (
@@ -558,7 +558,7 @@ ALTER SEQUENCE deploys_id_seq OWNED BY deploys.id;
 
 
 --
--- Name: device_bugs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: device_bugs; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE device_bugs (
@@ -568,7 +568,7 @@ CREATE TABLE device_bugs (
 
 
 --
--- Name: emails; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: emails; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE emails (
@@ -600,7 +600,7 @@ ALTER SEQUENCE emails_id_seq OWNED BY emails.id;
 
 
 --
--- Name: environments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: environments; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE environments (
@@ -634,7 +634,7 @@ ALTER SEQUENCE environments_id_seq OWNED BY environments.id;
 
 
 --
--- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE events (
@@ -667,7 +667,7 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
--- Name: memberships; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: memberships; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE memberships (
@@ -680,7 +680,7 @@ CREATE TABLE memberships (
 
 
 --
--- Name: notification_thresholds; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: notification_thresholds; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE notification_thresholds (
@@ -695,7 +695,7 @@ CREATE TABLE notification_thresholds (
 
 
 --
--- Name: obfuscation_maps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: obfuscation_maps; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE obfuscation_maps (
@@ -725,7 +725,7 @@ ALTER SEQUENCE obfuscation_maps_id_seq OWNED BY obfuscation_maps.id;
 
 
 --
--- Name: occurrences; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: occurrences; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE occurrences (
@@ -763,7 +763,7 @@ ALTER SEQUENCE occurrences_id_seq OWNED BY occurrences.id;
 
 
 --
--- Name: projects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: projects; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE projects (
@@ -800,7 +800,7 @@ ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE schema_migrations (
@@ -809,7 +809,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: slugs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: slugs; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE slugs (
@@ -844,7 +844,7 @@ ALTER SEQUENCE slugs_id_seq OWNED BY slugs.id;
 
 
 --
--- Name: source_maps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: source_maps; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE source_maps (
@@ -875,7 +875,7 @@ ALTER SEQUENCE source_maps_id_seq OWNED BY source_maps.id;
 
 
 --
--- Name: symbolications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: symbolications; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE symbolications (
@@ -886,7 +886,7 @@ CREATE TABLE symbolications (
 
 
 --
--- Name: user_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: user_events; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE user_events (
@@ -897,7 +897,7 @@ CREATE TABLE user_events (
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE users (
@@ -930,7 +930,7 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: watches; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: watches; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE watches (
@@ -1032,7 +1032,7 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: blames_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: blames_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY blames
@@ -1040,7 +1040,7 @@ ALTER TABLE ONLY blames
 
 
 --
--- Name: bugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY bugs
@@ -1048,7 +1048,7 @@ ALTER TABLE ONLY bugs
 
 
 --
--- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY comments
@@ -1056,7 +1056,7 @@ ALTER TABLE ONLY comments
 
 
 --
--- Name: deploys_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: deploys_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY deploys
@@ -1064,7 +1064,7 @@ ALTER TABLE ONLY deploys
 
 
 --
--- Name: device_bugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: device_bugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY device_bugs
@@ -1072,7 +1072,7 @@ ALTER TABLE ONLY device_bugs
 
 
 --
--- Name: emails_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: emails_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY emails
@@ -1080,7 +1080,7 @@ ALTER TABLE ONLY emails
 
 
 --
--- Name: environments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: environments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY environments
@@ -1088,7 +1088,7 @@ ALTER TABLE ONLY environments
 
 
 --
--- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY events
@@ -1096,7 +1096,7 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY memberships
@@ -1104,7 +1104,7 @@ ALTER TABLE ONLY memberships
 
 
 --
--- Name: notification_thresholds_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: notification_thresholds_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY notification_thresholds
@@ -1112,7 +1112,7 @@ ALTER TABLE ONLY notification_thresholds
 
 
 --
--- Name: obfuscation_maps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: obfuscation_maps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY obfuscation_maps
@@ -1120,7 +1120,7 @@ ALTER TABLE ONLY obfuscation_maps
 
 
 --
--- Name: occurrences_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: occurrences_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY occurrences
@@ -1128,7 +1128,7 @@ ALTER TABLE ONLY occurrences
 
 
 --
--- Name: projects_api_key_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: projects_api_key_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY projects
@@ -1136,7 +1136,7 @@ ALTER TABLE ONLY projects
 
 
 --
--- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY projects
@@ -1144,7 +1144,7 @@ ALTER TABLE ONLY projects
 
 
 --
--- Name: slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY slugs
@@ -1152,7 +1152,7 @@ ALTER TABLE ONLY slugs
 
 
 --
--- Name: source_maps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: source_maps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY source_maps
@@ -1160,7 +1160,7 @@ ALTER TABLE ONLY source_maps
 
 
 --
--- Name: symbolications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: symbolications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY symbolications
@@ -1168,7 +1168,7 @@ ALTER TABLE ONLY symbolications
 
 
 --
--- Name: user_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: user_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY user_events
@@ -1176,7 +1176,7 @@ ALTER TABLE ONLY user_events
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY users
@@ -1184,7 +1184,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: watches_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: watches_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY watches
@@ -1192,238 +1192,238 @@ ALTER TABLE ONLY watches
 
 
 --
--- Name: blames_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: blames_key; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX blames_key ON blames USING btree (repository_hash, revision, file, line);
 
 
 --
--- Name: blames_lru; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: blames_lru; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX blames_lru ON blames USING btree (updated_at);
 
 
 --
--- Name: bugs_env_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_env_number; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX bugs_env_number ON bugs USING btree (environment_id, number);
 
 
 --
--- Name: bugs_env_user; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_env_user; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX bugs_env_user ON bugs USING btree (environment_id, assigned_user_id, fixed, irrelevant);
 
 
 --
--- Name: bugs_environment_textsearch; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_environment_textsearch; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX bugs_environment_textsearch ON bugs USING gin (searchable_text);
 
 
 --
--- Name: bugs_find_for_occ1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_find_for_occ1; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX bugs_find_for_occ1 ON bugs USING btree (environment_id, class_name, file, line, blamed_revision, deploy_id);
 
 
 --
--- Name: bugs_find_for_occ2; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_find_for_occ2; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX bugs_find_for_occ2 ON bugs USING btree (environment_id, class_name, file, line, blamed_revision, fixed);
 
 
 --
--- Name: bugs_fixed; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_fixed; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX bugs_fixed ON bugs USING btree (fixed);
 
 
 --
--- Name: bugs_list_fo; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_list_fo; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX bugs_list_fo ON bugs USING btree (environment_id, deploy_id, assigned_user_id, fixed, irrelevant, any_occurrence_crashed, first_occurrence, number);
 
 
 --
--- Name: bugs_list_lo; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_list_lo; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX bugs_list_lo ON bugs USING btree (environment_id, deploy_id, assigned_user_id, fixed, irrelevant, any_occurrence_crashed, latest_occurrence, number);
 
 
 --
--- Name: bugs_list_oc; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_list_oc; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX bugs_list_oc ON bugs USING btree (environment_id, deploy_id, assigned_user_id, fixed, irrelevant, any_occurrence_crashed, occurrences_count, number);
 
 
 --
--- Name: bugs_user; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_user; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX bugs_user ON bugs USING btree (assigned_user_id, fixed, irrelevant);
 
 
 --
--- Name: bugs_user_recency; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: bugs_user_recency; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX bugs_user_recency ON bugs USING btree (assigned_user_id, latest_occurrence, number);
 
 
 --
--- Name: comments_bug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: comments_bug; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX comments_bug ON comments USING btree (bug_id, created_at);
 
 
 --
--- Name: comments_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: comments_number; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX comments_number ON comments USING btree (bug_id, number);
 
 
 --
--- Name: deploys_env_build; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: deploys_env_build; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX deploys_env_build ON deploys USING btree (environment_id, build);
 
 
 --
--- Name: deploys_env_revision; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: deploys_env_revision; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX deploys_env_revision ON deploys USING btree (environment_id, revision, deployed_at);
 
 
 --
--- Name: deploys_env_time; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: deploys_env_time; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX deploys_env_time ON deploys USING btree (environment_id, deployed_at);
 
 
 --
--- Name: emails_email_user; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: emails_email_user; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX emails_email_user ON emails USING btree (lower((email)::text), project_id, user_id);
 
 
 --
--- Name: emails_primary; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: emails_primary; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX emails_primary ON emails USING btree (user_id, "primary");
 
 
 --
--- Name: environments_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: environments_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX environments_name ON environments USING btree (project_id, lower((name)::text));
 
 
 --
--- Name: events_bug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: events_bug; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX events_bug ON events USING btree (bug_id, created_at);
 
 
 --
--- Name: occurrences_bug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: occurrences_bug; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX occurrences_bug ON occurrences USING btree (bug_id, occurred_at);
 
 
 --
--- Name: occurrences_bug_redirect; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: occurrences_bug_redirect; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX occurrences_bug_redirect ON occurrences USING btree (bug_id, redirect_target_id);
 
 
 --
--- Name: occurrences_bug_revision; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: occurrences_bug_revision; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX occurrences_bug_revision ON occurrences USING btree (bug_id, revision, occurred_at);
 
 
 --
--- Name: occurrences_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: occurrences_number; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX occurrences_number ON occurrences USING btree (bug_id, number);
 
 
 --
--- Name: projects_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: projects_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX projects_name ON projects USING btree (lower((name)::text) text_pattern_ops);
 
 
 --
--- Name: projects_owner; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: projects_owner; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX projects_owner ON projects USING btree (owner_id);
 
 
 --
--- Name: slugs_for_record; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: slugs_for_record; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX slugs_for_record ON slugs USING btree (sluggable_type, sluggable_id, active);
 
 
 --
--- Name: slugs_unique; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: slugs_unique; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX slugs_unique ON slugs USING btree (sluggable_type, lower((scope)::text), lower((slug)::text));
 
 
 --
--- Name: source_maps_env_revision; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: source_maps_env_revision; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX source_maps_env_revision ON source_maps USING btree (environment_id, revision);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
 
 
 --
--- Name: user_events_time; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: user_events_time; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX user_events_time ON user_events USING btree (event_id, created_at);
 
 
 --
--- Name: users_username; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: users_username; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX users_username ON users USING btree (lower((username)::text) text_pattern_ops);
@@ -1591,8 +1591,8 @@ CREATE TRIGGER occurrences_set_number AFTER INSERT ON occurrences FOR EACH ROW E
 -- Name: bugs_assigned_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY bugs
-    ADD CONSTRAINT bugs_assigned_user_id_fkey FOREIGN KEY (assigned_user_id) REFERENCES users(id) ON DELETE SET NULL;
+-- ALTER TABLE ONLY bugs
+--     ADD CONSTRAINT bugs_assigned_user_id_fkey FOREIGN KEY (assigned_user_id) REFERENCES users(id) ON DELETE SET NULL;
 
 
 --
@@ -1631,8 +1631,8 @@ ALTER TABLE ONLY comments
 -- Name: comments_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY comments
-    ADD CONSTRAINT comments_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL;
+-- ALTER TABLE ONLY comments
+--     ADD CONSTRAINT comments_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL;
 
 
 --
@@ -1663,8 +1663,8 @@ ALTER TABLE ONLY emails
 -- Name: emails_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY emails
-    ADD CONSTRAINT emails_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+-- ALTER TABLE ONLY emails
+--     ADD CONSTRAINT emails_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 
 --
@@ -1687,8 +1687,8 @@ ALTER TABLE ONLY events
 -- Name: events_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY events
-    ADD CONSTRAINT events_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL;
+-- ALTER TABLE ONLY events
+--     ADD CONSTRAINT events_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL;
 
 
 --
@@ -1703,8 +1703,8 @@ ALTER TABLE ONLY memberships
 -- Name: memberships_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY memberships
-    ADD CONSTRAINT memberships_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+-- ALTER TABLE ONLY memberships
+--     ADD CONSTRAINT memberships_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 
 --
@@ -1719,8 +1719,8 @@ ALTER TABLE ONLY notification_thresholds
 -- Name: notification_thresholds_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY notification_thresholds
-    ADD CONSTRAINT notification_thresholds_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+-- ALTER TABLE ONLY notification_thresholds
+--     ADD CONSTRAINT notification_thresholds_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 
 --
@@ -1759,8 +1759,8 @@ ALTER TABLE ONLY projects
 -- Name: projects_owner_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects
-    ADD CONSTRAINT projects_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE RESTRICT;
+-- ALTER TABLE ONLY projects
+--    ADD CONSTRAINT projects_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE RESTRICT;
 
 
 --
@@ -1783,8 +1783,8 @@ ALTER TABLE ONLY user_events
 -- Name: user_events_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY user_events
-    ADD CONSTRAINT user_events_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+-- ALTER TABLE ONLY user_events
+--     ADD CONSTRAINT user_events_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 
 --
@@ -1799,8 +1799,8 @@ ALTER TABLE ONLY watches
 -- Name: watches_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY watches
-    ADD CONSTRAINT watches_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+-- ALTER TABLE ONLY watches
+--     ADD CONSTRAINT watches_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 
 --
