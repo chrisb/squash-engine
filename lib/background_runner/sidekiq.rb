@@ -34,11 +34,11 @@ module BackgroundRunner
   module Sidekiq
     def self.setup
       ::Sidekiq.configure_server do |config|
-        config.redis = Squash::Configuration.concurrency.sidekiq.redis
+        config.redis = Squash::Configuration.concurrency.sidekiq[:redis]
       end
 
       ::Sidekiq.configure_client do |config|
-        config.redis = Squash::Configuration.concurrency.sidekiq.redis
+        config.redis = Squash::Configuration.concurrency.sidekiq[:redis]
       end
 
       require 'sidekiq/testing/inline' if Rails.env.test?
@@ -58,7 +58,8 @@ module BackgroundRunner
       mod.class_eval <<-RUBY
         class SidekiqAdapter
           include ::Sidekiq::Worker
-          options = Squash::Configuration.concurrency.sidekiq.worker_options[#{mod.to_s.inspect}]
+          all_worker_options = Squash::Configuration.concurrency.sidekiq[:worker_options]
+          options = HashWithIndifferentAccess.new(all_worker_options)[#{mod.to_s.inspect}]
           sidekiq_options(options.symbolize_keys) if options
 
           def perform(*args)

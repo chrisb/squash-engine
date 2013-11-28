@@ -94,7 +94,7 @@ class Api::V1Controller < ActionController::Base
     require_params :symbolications
 
     params['symbolications'].each do |attrs|
-      Symbolication.where(uuid: attrs['uuid']).create_or_update do |symbolication|
+      Squash::Symbolication.where(uuid: attrs['uuid']).create_or_update do |symbolication|
         symbolication.send :write_attribute, :symbols, attrs['symbols']
         symbolication.send :write_attribute, :lines, attrs['lines']
       end

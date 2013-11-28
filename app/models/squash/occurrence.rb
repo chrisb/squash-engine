@@ -372,6 +372,8 @@
 # | `window_height` | The height of the browser window at the time of exception, in pixels. |
 # | `color_depth`   | The color bit depth of the device displaying the browser window.      |
 
+require 'validates_timeliness'
+
 module Squash
   class Occurrence < Squash::Record
     belongs_to :bug, inverse_of: :occurrences

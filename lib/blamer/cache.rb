@@ -43,7 +43,7 @@ module Blamer
     private
 
     def cached_blame(project, revision, file, line)
-      blame = Blame.for_project(project).where(revision: revision, file: file, line: line).first
+      blame = Squash::Blame.for_project(project).where(revision: revision, file: file, line: line).first
       if blame
         blame.touch
         return project.repo.object(blame.blamed_revision)
@@ -68,20 +68,16 @@ module Blamer
     def write_blame(project, revision, file, line, blamed_commit)
       if blamed_commit
         purge_entry_if_necessary
-        Blame.for_project(project).
-            where(revision: revision, file: file, line: line).
-            create_or_update! do |blame|
-          blame.blamed_revision = blamed_commit.sha
-        end
+        b = Squash::Blame.for_project(project).find_or_create_by!(revision: revision, file: file, line: line, blamed_revision: blamed_commit.sha)
       end
       return blamed_commit
     end
 
     def purge_entry_if_necessary
-      Blame.transaction do
-        if (count = Blame.count) >= MAX_ENTRIES
-          query = Blame.select(:id).order('updated_at ASC').limit((count + 1) - MAX_ENTRIES).to_sql
-          Blame.where("id = ANY(ARRAY(#{query}))").delete_all
+      Squash::Blame.transaction do
+        if (count = Squash::Blame.count) >= MAX_ENTRIES
+          query = Squash::Blame.select(:id).order('updated_at ASC').limit((count + 1) - MAX_ENTRIES).to_sql
+          Squash::Blame.where("id = ANY(ARRAY(#{query}))").delete_all
         end
       end
     end

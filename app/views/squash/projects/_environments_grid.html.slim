@@ -17,9 +17,9 @@
                     - else
                       = link_to 'Make Default', '#', class: 'make-default', :'data-id' => environment.id
               - if [:admin, :owner].include?(current_user.role(@project))
-                = form_for [@project, environment], format: 'json', namespace: "env_#{environment.name}" do |f|
+                = form_for [@project, environment], url: squash_project_environment_url(@project,environment), format: 'json', namespace: "env_#{environment.name}" do |f|
                   p
-                    = f.check_box :sends_email
+                    = f.check_box :sends_emails
                     '
                     = f.label :sends_emails
                     - unless Squash::Configuration.pagerduty.disabled

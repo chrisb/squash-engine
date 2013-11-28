@@ -57,6 +57,8 @@
 # | `build`   | The internal version identifier of the release. |
 # | `version` | The human readable version number.              |
 
+require 'validates_timeliness'
+
 module Squash
   class Deploy < Squash::Record
     belongs_to :environment, inverse_of: :deploys

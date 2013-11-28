@@ -100,7 +100,7 @@
 module Squash
   class Bug < Squash::Record
     belongs_to :environment, inverse_of: :bugs
-    belongs_to :assigned_user, class_name: 'User', inverse_of: :assigned_bugs
+    belongs_to :assigned_user, class_name: 'User' #, inverse_of: :assigned_bugs
     belongs_to :deploy, inverse_of: :bugs
     belongs_to :duplicate_of, class_name: 'Bug', inverse_of: :duplicate_bugs
     has_many :duplicate_bugs, class_name: 'Bug', foreign_key: 'duplicate_of_id', inverse_of: :duplicate_of, dependent: :destroy

@@ -108,18 +108,16 @@ module Blamer
                    #   * if such a bug exists, use that bug and alter its deploy_id to
                    #     the given deploy;
                    #   * otherwise, a new bug is created.
-                   b        = Bug.transaction do
-                     environment.bugs.where(criteria.merge(deploy_id: deploy.id)).first ||
-                         environment.bugs.where(criteria.merge(fixed: false)).
-                             find_or_create!(bug_attributes)
-                   end
+                   b = environment.bugs.where(criteria.merge(deploy_id: deploy.id)).first
+                   b = environment.bugs.where(criteria.merge(fixed: false).merge(bug_attributes.except :message_template, :special_file)).first unless b
+                   b = Squash::Bug.new(bug_attributes.merge(criteria)) unless b
                    b.deploy = deploy
                    b
                  else
                    # for hosted projects, we search for any bug matching the criteria under
                    # our current environment
-                   environment.bugs.where(criteria).
-                       find_or_create!(bug_attributes)
+                   b = environment.bugs.where(criteria.merge(bug_attributes.except :message_template, :special_file)).first
+                   b = Squash::Bug.new(bug_attributes.merge(criteria)) unless b
                  end
 
       # If this code works as it should, there should only be one open record of

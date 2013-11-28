@@ -16,7 +16,7 @@ namespace :sidekiq do
   desc "Writes a Sidekiq configuration file into config/sidekiq.yml"
   task configure: :environment do
     File.open(Rails.root.join('config', 'sidekiq.yml'), 'w') do |f|
-      f.puts Squash::Configuration.concurrency.sidekiq.redis.except('url').symbolize_keys.to_yaml
+      f.puts Squash::Configuration.concurrency.sidekiq[:redis].except('url').symbolize_keys.to_yaml
     end
   end
 end

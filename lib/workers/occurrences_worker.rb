@@ -1,3 +1,6 @@
+puts "~~~~>>> LOADING OCCURRENCES_WORKER"
+
+
 # Copyright 2013 Square Inc.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +31,8 @@
 # Bug can be found.
 #
 # When the Occurrence is created, it is assigned to a Bug by the {Blamer} class.
+
+require 'user-agent'
 
 class OccurrencesWorker
   include BackgroundRunner::Job
@@ -64,7 +69,7 @@ class OccurrencesWorker
     end
 
     env_name     = @attrs.delete('environment')
-    @environment = project.environments.with_name(env_name).find_or_create!(name: env_name)
+    @environment = project.environments.with_name(env_name).find_or_create_by!(name: env_name)
   rescue ActiveRecord::RecordInvalid => err
     raise API::InvalidAttributesError, err.to_s
   end
@@ -73,6 +78,7 @@ class OccurrencesWorker
   # {Bug}.
 
   def perform
+    Rails.logger.info "STARTING!!!!!!!!"
     # First make an occurrence to perform a blame on
     commit         = set_deploy_and_commit
     class_name     = @attrs.delete('class_name')
@@ -95,7 +101,7 @@ class OccurrencesWorker
 
     # hook things up and save
     occurrence.bug     = bug
-    Bug.transaction do
+    Squash::Bug.transaction do
       bug.save!
       occurrence.save!
     end
@@ -141,7 +147,7 @@ class OccurrencesWorker
     occurrence_attrs = Hash.new
     other_data       = Hash.new
     @attrs.each do |k, v|
-      if Occurrence.attribute_names.include?(k) || Occurrence.metadata_column_fields.keys.map(&:to_s).include?(k)
+      if Squash::Occurrence.attribute_names.include?(k) || Squash::Occurrence.metadata_column_fields.keys.map(&:to_s).include?(k)
         occurrence_attrs[k] = v
       else
         other_data[k] = v
@@ -150,7 +156,7 @@ class OccurrencesWorker
     occurrence_attrs['query'] = occurrence_attrs['query'][0, 255] if occurrence_attrs['query']
     occurrence_attrs['revision'] = sha
 
-    occurrence          = Occurrence.new(occurrence_attrs)
+    occurrence          = Squash::Occurrence.new(occurrence_attrs)
     occurrence.metadata = JSON.parse(occurrence.metadata).reverse_merge(other_data).to_json
     occurrence.message  ||= occurrence.class_name # hack for Java
     occurrence.symbolicate                        # must symbolicate before assigning blame
