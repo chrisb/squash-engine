@@ -17,8 +17,8 @@
 module Squash
   class ProjectsController < SquashController
     before_filter :find_project, except: [:index, :create, :new]
-    before_filter :admin_login_required, only: [:update, :rekey]
-    before_filter :owner_login_required, only: :destroy
+    # before_filter :admin_login_required, only: [:update, :rekey]
+    # before_filter :owner_login_required, only: :destroy
 
     respond_to :html, :json
 

@@ -4,6 +4,6 @@
 
 details.diff
   summary Diff
-  - accordion 'diffs' do |a|
+  dl.accordion[data-accordion]
     - diffs.each_with_index do |diff,i|
-      = render 'squash/bugs/diff', diff: diff, id: id, index: i, acc: a
+      = render 'squash/bugs/diff', diff: diff, id: id, index: i

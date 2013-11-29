@@ -178,6 +178,8 @@ module Squash
     def self.inject_user_associations
       Squash::Project.send :belongs_to, :owner, class_name: config.user_model, inverse_of: :owned_projects
       Squash::Project.send :has_many, :members, through: :memberships, source: :user, class_name: config.user_model
+
+      Squash::Membership.send :belongs_to, :user, class_name: config.user_model
     end
 
     config.user_model = 'Squash::User' # override with your own

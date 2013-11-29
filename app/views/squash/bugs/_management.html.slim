@@ -1,10 +1,13 @@
 p= content_tag :em, "How are things going with this bug?"
 
-= form_for [@project, @environment, @bug], format: 'json', html: {class: 'labeled whitewashed', id: 'management-form'} do |f|
+= form_for [@project, @environment, @bug], url: squash_project_environment_bug_path(@project, @environment, @bug), format: 'json', html: {class: 'labeled whitewashed', id: 'management-form'} do |f|
   fieldset
     h5 We're working on it.
     = f.label :assigned_user_id
-    = f.select :assigned_user_id, @project.members.order('username ASC').map { |u| ["#{u.username} (#{u.name})", u.id] }, include_blank: true
+
+    - members = @project.memberships.collect(&:user)
+    - assigned_user_options = members.map { |u| [ u.name, u.id ] }
+    = f.select :assigned_user_id, assigned_user_options, include_blank: true
     - unless Squash::Configuration.jira.disabled?
       div
         = f.label :jira_issue
@@ -42,7 +45,7 @@ p= content_tag :em, "How are things going with this bug?"
 
     p … or …
 
-    = button_to "Delete this bug", project_environment_bug_url(@project, @environment, @bug), 'data-sqmethod' => 'DELETE', class: 'warning', 'data-sqconfirm' => "Are you sure you want to delete this bug and all its occurrences?"
+    = button_to "Delete this bug", squash_project_environment_bug_url(@project, @environment, @bug), 'data-sqmethod' => 'DELETE', class: 'warning', 'data-sqconfirm' => "Are you sure you want to delete this bug and all its occurrences?"
     - if @bug.duplicate?
       p.help-block This will remove all occurrences, comments, etc. Use for (e.g.) sensitive data or false notifications. All bugs marked as duplicate of this bug will be deleted as well.
 
@@ -60,10 +63,11 @@ p= content_tag :em, "How are things going with this bug?"
     .comment
       h6.comment-author
         = image_tag current_user.gravatar
-        = link_to current_user.name, account_url
+        = link_to current_user.name, '#'
       = image_tag 'comment-arrow.png'
       .comment-body
-        = field_for @bug.comments.build do |nc|
-          nc.text_area :body, rows: 4, cols: '', id: nil
+        = f.fields_for @bug.comments.build do |nc|
+          = nc.text_area :body, rows: 4, cols: '', id: nil
 
-  .form-actions= f.submit class: 'default' }
+  .form-actions
+    = f.submit class: 'default'

@@ -18,7 +18,7 @@
 
 module Squash
   class CommitsController < SquashController
-    brushes = YAML.load_file(Rails.root.join('data', 'brushes.yml'))
+    brushes = YAML.load_file(::Rails.root.join('data', 'brushes.yml'))
 
     # A map of file extensions to the SyntaxHighlighter brush to use.
     BRUSH_FOR_EXTENSION = brushes['by_extension']

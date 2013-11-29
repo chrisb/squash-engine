@@ -1,8 +1,10 @@
 dl
   dt First occurrence
-  dd= time id: 'first-occurrence', datetime: @bug.first_occurrence.xmlschema
+  dd
+    time#first-occurrence[datetime=@bug.first_occurrence.xmlschema]
   dt Latest occurrence
-  dd= time id: 'latest-occurrence', datetime: @bug.latest_occurrence.xmlschema
+  dd
+    time#latest-occurrence[datetime=@bug.latest_occurrence.xmlschema]
 
 h4 Occurrence Histogram
 div#histogram

@@ -30,16 +30,18 @@
       - if @environment.deploys.builds.any?
         ' that occurred in build
         =  select_tag 'filter[deploy_id]', options_for_select(@environment.deploys.builds.by_time.map { |d| ["#{d.build} (#{d.version})", d.id] }.unshift(['any', nil])), class: 'input-small'
-        p
-          ' Search exception classes, exception messages, and comments:
-          = text_field_tag 'filter[search]', '', class: 'input-medium', id: 'filter_search'
-          span.aux= "(this field uses #{link_to "PostgreSQL "+content_tag(:tt,'tsquery')+" syntax", '#syntax-help', rel: 'modal'})"
+      p
+        ' Search exception classes, exception messages, and comments:
+        = text_field_tag 'filter[search]', '', class: 'input-medium', id: 'filter_search'
+        span.aux= "(this field uses #{link_to "PostgreSQL "+content_tag(:tt,'tsquery')+" syntax", '#search-syntax-help', rel: 'modal'})"
 
-table#bugs
+= link_to ("Help with PostgreSQL "+content_tag(:tt,'tsquery')+" syntax").html_safe, '#', class: 'button secondary tiny radius', data: { 'reveal-id' => 'search-syntax-help' }
 
-.modal#syntax-help
-  = link_to '&times;'.html_safe, '#', class: 'close'
-  h1 Search Query Syntax
+table#bugs[data-source=squash_project_environment_bugs_url(@project, @environment, format: 'json')]
+
+.reveal-modal#search-syntax-help[data-reveal]
+  a.close-reveal-modal &#215;
+  h3 Search Query Syntax
   .modal-body
     p Class names, messages, and comments are searched.
     pre= "(windows | linux) & !osx & bsod"

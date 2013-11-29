@@ -3,6 +3,24 @@
 - @page_title = "Bug ##{number_with_delimiter @bug.number} (#{@project.name} #{@environment.name.capitalize})"
 - @breadcrumbs = [ @project, @environment, @bug ]
 
+= hidden_field_tag 'bug-events-url', squash_project_environment_bug_events_url(@project, @environment, @bug, format: 'json')
+= hidden_field_tag 'commits-url', squash_project_commits_url(@project, format: 'json')
+= hidden_field_tag 'comments-url', squash_project_environment_bug_comments_url(@project, @environment, @bug, format: 'json')
+= hidden_field_tag 'occurrences-url', squash_project_environment_bug_occurrences_url(@project, @environment, @bug, format: 'json')
+= hidden_field_tag 'watch-url', watch_squash_project_environment_bug_url(@project, @environment, @bug, format: 'json')
+= hidden_field_tag 'aggregate-occurrences-url', aggregate_squash_project_environment_bug_occurrences_url(@project, @environment, @bug, format: 'json')
+= hidden_field_tag 'notify-deploy-url', notify_deploy_squash_project_environment_bug_url(@project, @environment, @bug, format: 'json')
+= hidden_field_tag 'notify-occurrence-url', notify_occurrence_squash_project_environment_bug_url(@project, @environment, @bug, format: 'json')
+= hidden_field_tag 'histogram-occurence-url', histogram_squash_project_environment_bug_occurrences_url(@project, @environment, @bug, format: 'json')
+= hidden_field_tag 'user-id', current_user.id
+= hidden_field_tag 'user-role', current_user.role(@project)
+= hidden_field_tag 'jira-issue-url', squash_jira_issue_url('REPLACEME')
+= hidden_field_tag 'jira-statuses-url', squash_jira_projects_url(format: :json)
+= hidden_field_tag 'jira-projects-url', squash_jira_statuses_url(format: :json)
+= hidden_field_tag 'new-issue-url', @new_issue_url
+= hidden_field_tag 'index-fields', Squash::OccurrencesController::INDEX_FIELDS[@bug.client].map { |key| [ key, Squash::Occurrence.human_attribute_name(key).titleize ] }.to_json
+= hidden_field_tag 'jira-status-id', @bug.jira_status_id || ''
+
 = full_width_section do
   / bug_title
   h1

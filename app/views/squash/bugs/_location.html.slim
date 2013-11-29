@@ -1,9 +1,9 @@
 h5 Location
 p#location
   - if @bug.special_file?
-    - case @bug.file # TODO don't guess, record this information
-    - when /^\[S\] /
-      = "<simple blamer>" # ??
+    /TODO don't guess, record this information
+    - if @bug.file =~ /^\[S\] /
+      = "<simple blamer>"
     - else
       = @bug.file
   - else

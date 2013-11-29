@@ -180,7 +180,7 @@ module Squash
                                                                    line:       @bug.special_file? ? t('controllers.bugs.show.jira_link.not_applicable') : @bug.line,
                                                                    message:    @bug.message_template,
                                                                    revision:   @bug.revision,
-                                                                   url:        project_environment_bug_url(@project, @environment, @bug),
+                                                                   url:        squash_project_environment_bug_url(@project, @environment, @bug),
                                                                    locale:     @bug.environment.project.locale),
                                                     issuetype:   1)
 
@@ -269,7 +269,7 @@ module Squash
       @bug.destroy
 
       respond_to do |format|
-        format.html { redirect_to project_environment_bugs_url(@project, @environment), flash: {success: t('controllers.bugs.destroy.deleted', number: number_with_delimiter(@bug.number))} }
+        format.html { redirect_to squash_project_environment_bugs_url(@project, @environment), flash: {success: t('controllers.bugs.destroy.deleted', number: number_with_delimiter(@bug.number))} }
       end
     end
 
@@ -333,7 +333,7 @@ module Squash
       end
 
       respond_to do |format|
-        format.json { render json: decorate_bug(@bug), location: project_environment_bug_url(@project, @environment, @bug) }
+        format.json { render json: decorate_bug(@bug), location: squash_project_environment_bug_url(@project, @environment, @bug) }
       end
     end
 
@@ -369,7 +369,7 @@ module Squash
       end
 
       respond_to do |format|
-        format.json { render json: decorate_bug(@bug), location: project_environment_bug_url(@project, @environment, @bug) }
+        format.json { render json: decorate_bug(@bug), location: squash_project_environment_bug_url(@project, @environment, @bug) }
       end
     end
 
@@ -385,8 +385,17 @@ module Squash
     end
 
     def decorate_bug(bug)
-      bug.as_json(only: [:number, :class_name, :message_template, :file, :line, :occurrences_count, :comments_count, :latest_occurrence]).merge(
-          href:                 project_environment_bug_url(@project, @environment, bug),
+      bug_attrs = [
+        :number,
+        :class_name,
+        :message_template,
+        :file,
+        :line,
+        :occurrences_count,
+        :comments_count,
+        :latest_occurrence ]
+      bug.as_json(only: bug_attrs).merge(
+          href:                 squash_project_environment_bug_url(@project, @environment, bug),
           notify_on_deploy:     bug.notify_on_deploy.include?(current_user.id),
           notify_on_occurrence: bug.notify_on_occurrence.include?(current_user.id)
       )
