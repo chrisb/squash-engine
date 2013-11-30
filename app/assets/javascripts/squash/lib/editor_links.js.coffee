@@ -41,16 +41,25 @@ jQuery.fn.editorLink = ->
       else if editor == 'sublime'
         url = (file) -> "subl://open?" + $.param({url: "file://#{file}", line: line})
         command = "subl #{shellEscape(file)}:#{line}"
-        element.attr('title', "This link requires asuth/subl-handler to work.").tooltip()
+        element.attr('title', "This link requires asuth/subl-handler to work.") #.tooltip()
+        element.attr('data-tooltip')
+        element.addClass('has-tip')
+        $(document).foundation()
       else if editor == 'vim'
         url = (file) -> "mvim://open?url=file://#{file}&line=#{line}"
         # MacVim doesn't support URL escapes
         command = "vim #{shellEscape(file)} +#{line}"
-        element.attr('title', "This link requires MacVim to work.").tooltip()
+        element.attr('title', "This link requires MacVim to work.") #.tooltip()
+        element.attr('data-tooltip')
+        element.addClass('has-tip')
+        $(document).foundation()
       else if editor == 'emacs'
         url = (file) -> "emacs://open?" + $.param({url: "file://#{file}", line: line})
         command = "emacs +#{line} #{shellEscape(file)}"
-        element.attr('title', "This link requires EmacsURLHandler to work.").tooltip()
+        element.attr('title', "This link requires EmacsURLHandler to work.") #.tooltip()
+        element.attr('data-tooltip')
+        element.addClass('has-tip')
+        $(document).foundation()
       else
         return
 

@@ -1,8 +1,12 @@
+= render 'squash/projects/header'
+
 / include Accordion
 / needs :project, :environment, :bug, :aggregation_dimensions, :new_issue_url
 - @page_title = "Bug ##{number_with_delimiter @bug.number} (#{@project.name} #{@environment.name.capitalize})"
 - @breadcrumbs = [ @project, @environment, @bug ]
+- index_fields = Squash::OccurrencesController::INDEX_FIELDS[@bug.client].map { |key| [ key, Squash::Occurrence.human_attribute_name(key).titleize ] }.to_json
 
+/ metric shit-ton of URLs
 = hidden_field_tag 'bug-events-url', squash_project_environment_bug_events_url(@project, @environment, @bug, format: 'json')
 = hidden_field_tag 'commits-url', squash_project_commits_url(@project, format: 'json')
 = hidden_field_tag 'comments-url', squash_project_environment_bug_comments_url(@project, @environment, @bug, format: 'json')
@@ -18,7 +22,7 @@
 = hidden_field_tag 'jira-statuses-url', squash_jira_projects_url(format: :json)
 = hidden_field_tag 'jira-projects-url', squash_jira_statuses_url(format: :json)
 = hidden_field_tag 'new-issue-url', @new_issue_url
-= hidden_field_tag 'index-fields', Squash::OccurrencesController::INDEX_FIELDS[@bug.client].map { |key| [ key, Squash::Occurrence.human_attribute_name(key).titleize ] }.to_json
+= hidden_field_tag 'index-fields', index_fields
 = hidden_field_tag 'jira-status-id', @bug.jira_status_id || ''
 
 = full_width_section do
@@ -26,7 +30,6 @@
   h1
     = @bug.class_name
     = link_to '', '#', class: "icon-star#{'-empty' unless current_user.watches?(@bug)}", alt: 'Watch/unwatch this bug'
-
   / notice_bars
   - if @bug.fixed?
     / fixed_bar
@@ -41,7 +44,6 @@
   - unless current_user.role(@bug)
     / uneditable_bar
     p.alert.info= "You will need to #{link_to "join this project", join_project_my_membership_url(@project), :'data-sqmethod' => 'POST', id: 'join-link'} to edit this bug."
-
   / bug_info
   h5 Message
   pre.scrollable= @bug.message_template
@@ -60,38 +62,28 @@
       p.alert.error The backtraces for this bug cannot be displayed because they are in an unknown format.
 
 
-= tab_header do
-  ul.tab-header
-    li.active= link_to "History", '#history', rel: 'tab'
-    - if @bug.blamed_revision
-      li= link_to 'Git Blame', '#blame', rel: 'tab'
-    - if @bug.resolution_revision
-      li= link_to 'The Fix', '#fix', rel: 'tab'
-    - if current_user.role(@project)
-      li= link_to 'Management', '#management', rel: 'tab'
-    li= link_to 'Notifications', '#notifications', rel: 'tab'
-    li= link_to "Comments #{'('+number_with_delimiter(@bug.comments_count)+')' if @bug.comments_count > 0}", '#comments', rel: 'tab'
-    li= link_to 'Aggregation', '#aggregation', rel: 'tab'
-    li.with-table= link_to "Occurrences #{'('+number_with_delimiter(@bug.occurrences_count)+')' if @bug.occurrences_count > 0}", '#occurrences', rel: 'tab'
+dl.tabs[data-tab]
+  dd.active= link_to "History", '#history', rel: 'tab'
+  - if @bug.blamed_revision
+    dd= link_to 'Git Blame', '#blame', rel: 'tab'
+  - if @bug.resolution_revision
+    dd= link_to 'The Fix', '#fix', rel: 'tab'
+  - if current_user.role(@project)
+    dd= link_to 'Management', '#management', rel: 'tab'
+  dd= link_to 'Notifications', '#notifications', rel: 'tab'
+  dd= link_to "Comments #{'('+number_with_delimiter(@bug.comments_count)+')' if @bug.comments_count > 0}", '#comments', rel: 'tab'
+  dd= link_to 'Aggregation', '#aggregation', rel: 'tab'
+  dd= link_to "Occurrences #{'('+number_with_delimiter(@bug.occurrences_count)+')' if @bug.occurrences_count > 0}", '#occurrences', rel: 'tab'
 
-= tab_container do
-  .tab-content.tab-primary
-    div.active#history
-      = render 'squash/bugs/history'
-    - if @bug.blamed_revision
-      div#blame
-        = render 'squash/bugs/blame'
-    - if @bug.resolution_revision
-      div#fix
-        = render 'squash/bugs/fix'
-    - if current_user.role(@project)
-      div#management
-        = render 'squash/bugs/management'
-    div#notifications
-      = render 'squash/bugs/notifications'
-    div#comments
-      = render 'squash/bugs/comments'
-    div#aggregation
-      = render 'squash/bugs/aggregation'
-    div.with-table#occurrences
-      = render 'squash/bugs/occurrences'
+div.tabs-content
+  .content.active#history= render 'squash/bugs/history'
+  - if @bug.blamed_revision
+    .content#blame= render 'squash/bugs/blame'
+  - if @bug.resolution_revision
+    .content#fix= render 'squash/bugs/fix'
+  - if current_user.role(@project)
+    .content#management= render 'squash/bugs/management'
+  .content#notifications= render 'squash/bugs/notifications'
+  .content#comments= render 'squash/bugs/comments'
+  .content#aggregation= render 'squash/bugs/aggregation'
+  .content#occurrences= render 'squash/bugs/occurrences'

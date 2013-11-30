@@ -1,20 +1,10 @@
 = render 'squash/projects/header'
 
-h3
-  span.step-number 1
-  ' Modify your code to use Squash.
-p= "Learn #{link_to 'how to add Squash to your project', '#configure-project', rel: 'modal'}. Your API key is: #{content_tag :code, @project.api_key}.".html_safe
-- if [ :owner, :admin ].include?(current_user.role(@project))
-  p= button_to('Regenerate your API key', rekey_squash_project_url(@project), method: :patch, data: { confirm: "This will break any existing Squash client integrations. Continue?" })
+h3 Project Settings
 
-h3
-  span.step-number 2
-  ' Make sure that your Git repository is accessible to Squash.
+p= link_to 'Learn how to add Squash to your project', '#', data: { 'reveal-id' => 'configure-project' }
 = render 'squash/projects/configuration_modal'
 
-h3
-  span.step-number 3
-  ' Configure your project settings.
 
 - if [ :admin, :owner ].include?(current_user.role(@project))
   = render 'squash/projects/configuration'

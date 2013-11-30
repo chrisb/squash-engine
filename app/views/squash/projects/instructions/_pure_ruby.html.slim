@@ -1,29 +1,24 @@
-   p do
-          text "Add the "
-          strong "squash_ruby"
-          text " gem to your Gemfile, then configure Squash like so:"
-        end
-        pre <<-RUBY, class: 'brush: ruby; light: true'
-Squash::Ruby.configure :api_host => '#{request.protocol + request.host_with_port}',
-                       :api_key => '#{@project.api_key}',
-                       :environment => 'production'
-        RUBY
+p
+  | Add the&nbsp;
+  strong squash_ruby
+  | &nbsp;gem to your Gemfile, then configure Sqush like so:
+  pre[class="brush: ruby; light: true"]
+    | Squash::Ruby.configure api_host: '#{request.protocol + request.host_with_port}',
+    |   api_key: '#{@project.api_key}',
+    |   environment: 'production'
 
-        p do
-          text "Surround your code with a "
-          code 'begin'
-          text '/'
-          code 'rescue'
-          text " statement, and call "
-          code 'Squash::Ruby.notify'
-          text " in the rescue block:"
-
-          pre <<-RUBY.chomp, class: 'brush: ruby; light: true'
-begin
-  your_code_here
-rescue Object => error
-  Squash::Ruby.notify error
-  raise # for normal Ruby exception handling
-end
-          RUBY
-        end
+p
+  | Surround your code with a&nbsp;
+  code begin
+  | /
+  code rescue
+  | &nbsp;statement and call
+  code Squash::Ruby.notify
+  | &nbsp; in the rescue block:
+  pre[class="brush: ruby; light: true"]
+    | begin
+    |   your_code_here
+    | rescue Object => error
+    |   Squash::Ruby.notify error
+    |   raise # for normal Ruby exception handling
+    | end

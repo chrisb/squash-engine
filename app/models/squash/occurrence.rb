@@ -618,7 +618,7 @@ module Squash
     end
 
     # @private
-    def to_param() number end
+    def to_param() number.to_s end
 
     # @return [String] Localized, human-readable name. This duck-types this class
     #   for use with breadcrumbs.

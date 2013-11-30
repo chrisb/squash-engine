@@ -1,76 +1,8 @@
+= render 'squash/projects/configuration/api_key'
 = form_for @project, html: { class: 'labeled'} do |f|
-  fieldset
-    h5 General Settings
-    = f.label :uses_releases, value: false, class: 'radio-label' do
-      = f.radio_button :uses_releases, false
-      ' this product is deployed to a server
-    = f.label :uses_releases, value: true, class: 'radio-label' do
-      = f.radio_button :uses_releases, true
-      ' this product is distributed to client platforms
-    = f.label :disable_message_filtering, class: 'checkbox-label' do
-      = f.check_box :disable_message_filtering
-      = ::Project.human_attribute_name :disable_message_filtering
-    p.help-block= "If unchecked, exception messages will be scanned for potentially sensitive information (phone numbers, emails);  those substrings will be replaced with tokens such as #{content_tag :samp, '[EMAIL?]'}."
-    = f.label :blamer_type
-    = f.select :blamer_type, Blamer::Base.subclasses.map { |c| [c.human_name, c.to_s] }
-    p.help-block If you would like to avoid making potentially slow requests to the Git repository, at the expense of less intelligent code analysis, choose the Git-free blamer.
-  fieldset
-    h4 Application and Library Paths
-    = f.label :filter_paths_string
-    = f.text_area :filter_paths_string, rows: 5, cols: ''
-    p.help-block List paths that are library, not application code, relative to your project root, one per line (or just paths to files you want excluded from blame). These can be whole paths or prefixes.
-    p.field-group
-      label[for='prefab'] Pre-fab paths:
-      = select_tag :prefab, options_for_select([ [ '', '' ], [ 'Ruby on Rails', 'rails' ]  ], selected: ''), id: 'prefab'
-      = button_tag 'Insert', id: 'insert-prefab', class: 'small'
-    = f.label :whitelist_paths_string
-    = f.text_area :whitelist_paths_string, rows: 5, cols: ''
-    p.help_block= "If you happen to have any files or paths within your filter paths (above) that #{content_tag :em, 'are'} application code, you can include them here, and they will be re-whitelisted."
-  fieldset
-    h5 Emails
-    = f.label :sender
-    = f.email_field :sender, placeholder: NotificationMailer.default[:from]
-    p.help-block Emails sent by Squash will appear to come from this address.
-    = f.label :critical_mailing_list
-    = f.email_field :critical_mailing_list
-    p.help-block Unresolved bugs that occur frequently will be reported to this address. Most engineers should be on this mailing list.
-    = f.label :all_mailing_list
-    = f.email_field :all_mailing_list
-    p.help-block All new bugs will be reported to this address. Few engineers should be on this mailing list.
-    = f.label :critical_threshold, required: true
-    = f.number_field :critical_threshold, min: 2
-    p.help-block The number of times an exception has to occur before it is sent to the critical mailing list.
-    = f.label :locale
-    = f.select :locale, I18n.available_locales.map(&:to_s), required: true
-    = f.label :sends_emails_outside_team, class: 'checkbox-label' do
-      = f.check_box :sends_emails_outside_team
-      = ::Project.human_attribute_name :sends_emails_outside_team
-    p.help-block If unchecked, people must be added as members of this project before they will receive exception alerts.
-    = f.label :trusted_email_domain
-    = f.text_field :trusted_email_domain, placeholder: Squash::Configuration.mailer.domain
-    p.help-block If the previous checkbox is checked, only email addresses with this domain will receive exception alerts. If blank, all email addresses will receive alerts.
-  fieldset
-    h5  Source Control
-    = f.label :repository_url
-    = f.text_field :repository_url, required: true
-    p If you change this, you might also want to change…
-    = f.label :commit_url_format
-    = f.text_field :commit_url_format
-    p.help-block= "This is the template Squash uses to generate links to web pages with information about a commit in your project. Type #{content_tag :kbd, '%{commit}'}  where you want the commit’s ID to appear."
-  - unless Squash::Configuration.pagerduty.disabled
-    fieldset
-      h5 PagerDuty Integration
-      p Squash can create a PagerDuty incident for new bugs. When the bug is assigned, the incident will automatically be acknowledged. The incident will also be resolved automatically when the bug is resolved.
-      = f.label :always_notify_pagerduty, value: false, class: 'radio-label' do
-        = f.radio_button :always_notify_pagerduty, false
-        ' notify PagerDuty when a bug exceeds the critical threshold (see above)
-      = f.label :always_notify_pagerduty, value: true, class: 'radio-label' do
-        = f.radio_button :always_notify_pagerduty, true
-        ' always notify PagerDuty
-      = f.label :pagerduty_service_key
-      = f.text_field :pagerduty_service_key
-      = f.label :pagerduty_enabled, class: 'checkbox-label' do
-        = f.check_box :pagerduty_enabled
-        = ::Project.human_attribute_name :pagerduty_enabled
-      p.help-block If you uncheck this, PagerDuty will not be notified of any new occurrences. Acknowledgements and resolutions of existing incidents will still be sent.
+  = render 'squash/projects/configuration/general_settings', f: f
+  = render 'squash/projects/configuration/paths', f: f
+  = render 'squash/projects/configuration/emails', f: f
+  = render 'squash/projects/configuration/source_control', f: f
+  = render 'squash/projects/configuration/pagerduty', f: f unless Squash::Configuration.pagerduty.disabled
   .form-actions= f.submit class: 'default'

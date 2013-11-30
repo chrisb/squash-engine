@@ -66,7 +66,7 @@ module Squash
 
     def self.concurrency
       @concurrency_config ||= setup_struct_from_hash({
-        background_runner: 'Multithread',
+        background_runner: 'Sidekiq',
         multithread: {
           priority_threshold: 50,
           pool_size: 20,
@@ -126,10 +126,10 @@ module Squash
             'CommentNotificationMailer'    => { queue: 'emails' },
             'DeployFixMarker'              => { queue: 'processing' },
             'DeployNotificationMailer'     => { queue: 'emails' },
-            'JiraStatusWorker'             => { queue: 'services', retry: false },
+            'JiraStatusWorker'             => { queue: 'services' }, # retry: false },
             'ObfuscationMapWorker'         => { queue: 'processing' },
             'OccurrenceNotificationMailer' => { queue: 'emails' },
-            'OccurrencesWorker'            => { queue: 'occurrences', retry: false },
+            'OccurrencesWorker'            => { queue: 'occurrences' }, # retry: false },
             'PagerDutyAcknowledger'        => { queue: 'services' },
             'PagerDutyNotifier'            => { queue: 'services' },
             'PagerDutyResolver'            => { queue: 'services' },
@@ -191,6 +191,7 @@ module Squash
     config.autoload_paths << config.root.join('app', 'models', 'observers')
     config.autoload_paths << config.root.join('app', 'controllers', 'additions')
     config.autoload_paths << config.root.join('app', 'views', 'additions')
+    # config.autoload_paths << config.root.join('app', 'workers')
     config.autoload_paths << config.root.join('lib')
     config.autoload_paths << config.root.join('lib', 'workers')
 

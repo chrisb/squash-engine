@@ -251,7 +251,7 @@ module Squash
     def decorate(occurrences)
       occurrences.map do |occurrence|
         occurrence.as_json(only: [:number, :occurred_at, :message], methods: INDEX_FIELDS[@bug.client]).merge(
-            href: project_environment_bug_occurrence_url(@project, @environment, @bug, occurrence)
+            href: squash_project_environment_bug_occurrence_url(@project, @environment, @bug, occurrence)
         )
       end
     end

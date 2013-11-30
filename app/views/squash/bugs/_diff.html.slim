@@ -10,7 +10,7 @@
 - title_inner = ""
 - title_inner += content_tag :span, '+'+number_with_delimiter(additions), class: 'additions' if additions > 0
 - title_inner += content_tag :span, '-'+number_with_delimiter(additions), class: 'deletions' if deletions > 0
-- title = title + content_tag( :span, title_inner, class: 'additions-deletions' )
+- title = title + content_tag( :span, title_inner.html_safe, class: 'additions-deletions' )
 - div_id = "#{id}-diff-#{index}"
 
 = link_to title, "##{div_id}"
